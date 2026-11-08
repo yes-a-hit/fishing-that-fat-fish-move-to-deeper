@@ -1,0 +1,308 @@
+extends Control
+
+## 关于页。协议、出处、彩蛋。
+##
+## 为什么要有这一页：这是个 CC BY-NC-SA 的免费小游戏，角色形象不是本项目画的 ——
+## 鲸鱼娘的原作是「上善无形」；大肥鱼、小肥鱼的女仆装版本由 ZipZipPipe 绘制，
+## 中肥鱼用的是上善无形的 Q 版汉服造型（衣服是汉服，不是和服）。
+## 另外还有社区梗图。把出处摆在自己家门口，是这条协议要求的最起码的事。
+## 内容是 data/about.json，读它只经过 ConfigLoader —— 这一层不碰文件。
+##
+## 页面上不放外链：手机上外链一点就跳浏览器，回来时游戏已经被系统回收了。
+
+const MENU_SCENE := "res://menu.tscn"
+
+var _data: Dictionary = {}
+var _preview: Control = null
+
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_data = ConfigLoader.read_json(ConfigLoader.PATH_ABOUT)
+	add_child(LakeBackdrop.new())
+	_build_page()
+
+
+func _sections() -> Array:
+	var out: Array = []
+	for s in _data.get("sections", []):
+		if typeof(s) == TYPE_DICTIONARY:
+			out.append(s)
+	return out
+
+
+func _links() -> Array:
+	var out: Array = []
+	for l in _data.get("links", []):
+		if typeof(l) == TYPE_DICTIONARY:
+			out.append(l)
+	return out
+
+
+func _easter() -> Array:
+	var out: Array = []
+	for e in _data.get("easter_eggs", []):
+		if typeof(e) == TYPE_DICTIONARY:
+			out.append(e)
+	return out
+
+
+# ---------- 页面 ----------
+
+func _build_page() -> void:
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 26)
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(margin)
+
+	var card := UIKit.card(Color(1, 1, 1, 0.95), Palette.RADIUS, 26)
+	margin.add_child(card)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 12)
+	card.add_child(col)
+
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 12)
+	col.add_child(head)
+
+	var title := UIKit.title(tr("关 于"), Palette.F_H2)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	head.add_child(title)
+
+	head.add_child(UIKit.label(String(_data.get("license_short", "")), Palette.F_BODY, Palette.ACCENT_DEEP))
+
+	col.add_child(UIKit.divider())
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	col.add_child(scroll)
+
+	var body := VBoxContainer.new()
+	body.add_theme_constant_override("separation", 10)
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(body)
+
+	var intro := UIKit.wrap_label(String(_data.get("intro", "")), Palette.F_BODY, Palette.INK_SOFT)
+	body.add_child(intro)
+
+	for s in _sections():
+		body.add_child(_build_section(s))
+
+	var links := _links()
+	if not links.is_empty():
+		body.add_child(UIKit.divider())
+		body.add_child(UIKit.label(tr("去 处"), Palette.F_SMALL, Palette.INK_FAINT))
+		for l in links:
+			body.add_child(_build_link_row(l))
+
+	# 彩蛋摆在最下面：先看完正事，再掉进私货里。
+	var eggs := _easter()
+	if not eggs.is_empty():
+		body.add_child(UIKit.divider())
+		body.add_child(_build_easter_section(eggs))
+
+	col.add_child(UIKit.divider())
+
+	var back := UIKit.button(tr("返 回"), false)
+	back.add_theme_font_size_override("font_size", Palette.F_BODY)
+	back.pressed.connect(func(): ChapterRouter.to_menu(self))
+	col.add_child(back)
+
+
+func _build_section(s: Dictionary) -> Control:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 2)
+
+	var head := UIKit.label("· " + String(s.get("title", "")), Palette.F_SMALL, Palette.INK)
+	box.add_child(head)
+
+	var text := UIKit.wrap_label(String(s.get("body", "")), Palette.F_SMALL, Palette.INK_SOFT)
+	box.add_child(text)
+	return box
+
+
+## 一行链接：左边标题 + 右边 URL，整行可点，点了开系统浏览器。
+func _build_link_row(l: Dictionary) -> Control:
+	var url := String(l.get("url", ""))
+	var row := Button.new()
+	row.focus_mode = Control.FOCUS_NONE
+	row.custom_minimum_size = Vector2(0, 44)
+	row.add_theme_stylebox_override("normal", _link_box(Palette.CARD_SOFT))
+	row.add_theme_stylebox_override("hover", _link_box(Palette.CARD_EDGE))
+	row.add_theme_stylebox_override("pressed", _link_box(Palette.CARD_EDGE.darkened(0.12)))
+	if url != "":
+		row.pressed.connect(_open_url.bind(url))
+		row.tooltip_text = url
+	else:
+		row.disabled = true
+
+	var pad := MarginContainer.new()
+	pad.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pad.add_theme_constant_override("margin_left", 12)
+	pad.add_theme_constant_override("margin_right", 12)
+	pad.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(pad)
+
+	var line := HBoxContainer.new()
+	line.add_theme_constant_override("separation", 12)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pad.add_child(line)
+
+	var name_label := UIKit.label(String(l.get("label", "")), Palette.F_BODY, Palette.INK)
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	line.add_child(name_label)
+
+	var url_label := UIKit.label(_pretty_url(url), Palette.F_SMALL, Palette.ACCENT_DEEP)
+	url_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	url_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	line.add_child(url_label)
+
+	return row
+
+
+## 长链接砍成「域名/末段」，一行放得下。
+func _pretty_url(url: String) -> String:
+	if url == "":
+		return "—"
+	var s := url.replace("https://", "").replace("http://", "")
+	if s.length() <= 46:
+		return s
+	var tail := s.substr(s.length() - 30, 30)
+	return s.substr(0, 12) + "…" + tail
+
+
+# ---------- 彩蛋 ----------
+
+## 两列网格。图都是 16:9，按 420 宽算出来高约 236，放大只到预览层。
+func _build_easter_section(eggs: Array) -> Control:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 8)
+
+	box.add_child(UIKit.label(tr("彩 蛋"), Palette.F_SMALL, Palette.INK_FAINT))
+
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 10)
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for e in eggs:
+		grid.add_child(_build_easter_cell(e))
+	box.add_child(grid)
+	return box
+
+
+func _build_easter_cell(e: Dictionary) -> Control:
+	var img := String(e.get("image", ""))
+	var has_art := img != "" and ResourceLoader.exists(img)
+
+	var cell := Button.new()
+	cell.focus_mode = Control.FOCUS_NONE
+	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cell.add_theme_stylebox_override("normal", _link_box(Palette.CARD_SOFT))
+	cell.add_theme_stylebox_override("hover", _link_box(Palette.CARD_EDGE))
+	cell.add_theme_stylebox_override("pressed", _link_box(Palette.CARD_EDGE.darkened(0.12)))
+	if has_art:
+		cell.pressed.connect(_open_preview.bind(img, String(e.get("caption", ""))))
+		cell.tooltip_text = tr("点一下放大")
+	else:
+		cell.disabled = true
+
+	var pad := MarginContainer.new()
+	pad.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		pad.add_theme_constant_override("margin_" + side, 6)
+	pad.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cell.add_child(pad)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 4)
+	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pad.add_child(col)
+
+	if has_art:
+		var pic := UIKit.picture_fit(img, Vector2(420, 236))
+		pic.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.add_child(pic)
+
+	var cap := UIKit.label(String(e.get("caption", "")), Palette.F_SMALL, Palette.INK_SOFT)
+	cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(cap)
+	return cell
+
+
+func _open_preview(image: String, caption: String) -> void:
+	_close_preview()
+
+	var layer := Control.new()
+	layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(layer)
+	_preview = layer
+
+	var dim := ColorRect.new()
+	dim.color = Color(0.055, 0.129, 0.169, 0.80)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(dim)
+
+	var closer := Button.new()
+	closer.focus_mode = Control.FOCUS_NONE
+	closer.flat = true
+	closer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	closer.pressed.connect(_close_preview)
+	layer.add_child(closer)
+
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(center)
+
+	var card := UIKit.card(Palette.CARD, Palette.RADIUS, 20)
+	center.add_child(card)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 8)
+	card.add_child(col)
+
+	# 按视口收一道，别让图把卡片顶出屏幕
+	var max_w := clampf(get_viewport_rect().size.x * 0.72, 480.0, 960.0)
+	col.add_child(UIKit.picture_fit(image, Vector2(max_w, max_w * 0.60)))
+
+	if caption != "":
+		var cap := UIKit.label(caption, Palette.F_BODY, Palette.INK_SOFT)
+		cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		col.add_child(cap)
+
+	var close := UIKit.button(tr("关 闭"), false)
+	close.add_theme_font_size_override("font_size", Palette.F_BODY)
+	close.pressed.connect(_close_preview)
+	col.add_child(close)
+
+
+func _close_preview() -> void:
+	if _preview != null and is_instance_valid(_preview):
+		_preview.queue_free()
+	_preview = null
+
+
+func _link_box(bg: Color) -> StyleBoxFlat:
+	var sb := UIKit.flat(bg, Palette.RADIUS_SM + 2)
+	sb.set_content_margin_all(2)
+	return sb
+
+
+func _open_url(url: String) -> void:
+	var err := OS.shell_open(url)
+	if err != OK:
+		push_warning(tr("[about] 打不开链接：%s (err %d)") % [url, err])
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		ChapterRouter.to_menu(self)
+		get_viewport().set_input_as_handled()

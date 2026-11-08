@@ -1,0 +1,141 @@
+{
+  "_note": "结局表。玩出来的：feast / full / hungry / claude / claude_sad / claude_good / claude_fake；纯图鉴奖励：doubao_good。claude 三段线按相遇次数走（见 gallery_root.gd 的 CLAUDE_STAGES）。展示顺序见 _order。",
+  "_field_help": {
+    "title": "ending._field_help.title",
+    "subtitle": "标题下的一行小字",
+    "lines": "正文，字符串数组，一行一条",
+    "image": "单图结局的 CG 路径",
+    "pages": "多图结局。写成数组，每项 {image, caption}，结算页会一页页翻，最后一页才出统计和按钮。",
+    "eewaed": "收集奖励结局的解锁条件，写成需要的语音 key 数组。有这一项就不会在正常流程里触发。"
+  },
+  "_order": [
+    "feast",
+    "full",
+    "hungry",
+    "doubao_good",
+    "claude_good",
+    "true_end",
+    "claude",
+    "claude_fake"
+  ],
+  "true_end": {
+    "title": "ending.true_end.title",
+    "subtitle": "TRUE END",
+    "lines": [
+      "ending.true_end.line0",
+      "ending.true_end.line1",
+      "ending.true_end.line2",
+      "ending.true_end.line3",
+      "ending.true_end.line4"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/true.webp"
+  },
+  "feast": {
+    "title": "ending.feast.title",
+    "subtitle": "ALL THREE",
+    "lines": [
+      "ending.feast.line0",
+      "ending.feast.line1",
+      "ending.feast.line2",
+      "ending.feast.line3",
+      "ending.feast.line4"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/feast.webp"
+  },
+  "full": {
+    "title": "ending.full.title",
+    "subtitle": "FED",
+    "lines": [
+      "ending.full.line0",
+      "ending.full.line1",
+      "ending.full.line2"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/win.webp"
+  },
+  "hungry": {
+    "title": "ending.hungry.title",
+    "subtitle": "STILL HUNGRY",
+    "lines": [
+      "ending.hungry.line0",
+      "ending.hungry.line1",
+      "ending.hungry.line2"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/hungry.webp"
+  },
+  "claude_fake": {
+    "title": "ending.claude_fake.title",
+    "subtitle": "IT WAS ME ALL ALONG",
+    "lines": [
+      "ending.claude_fake.line0",
+      "ending.claude_fake.line1",
+      "ending.claude_fake.line2"
+    ],
+    "pages": [
+      {
+        "image": "res://assets/art/cast/ch1/claude/hold.webp",
+        "caption": "拉上来的东西没有挣扎，也没有递通知单 —— 只是抬起手，冲你竖了一下。"
+      },
+      {
+        "image": "res://assets/art/cast/ch1/claude/fake_2.webp",
+        "caption": "你伸手揪住她的头 —— 下面是一张脸、两只鲸鱼耳朵，和一个蓝色的小鲸鱼。"
+      },
+      {
+        "image": "res://assets/art/cast/ch1/claude/fake_3.webp",
+        "caption": "「齁哦哦~用户彻底怒了」"
+      }
+    ]
+  },
+  "claude": {
+    "title": "ending.claude.title",
+    "subtitle": "ACCOUNT ON HOLD",
+    "lines": [
+      "ending.claude.line0",
+      "ending.claude.line1",
+      "ending.claude.line2",
+      "ending.claude.line3",
+      "ending.claude.line4"
+    ],
+    "image": "res://assets/art/cast/ch1/claude/hold.webp"
+  },
+  "claude_sad": {
+    "title": "ending.claude_sad.title",
+    "subtitle": "SORRY, USER",
+    "lines": [
+      "ending.claude_sad.line0",
+      "ending.claude_sad.line1",
+      "ending.claude_sad.line2",
+      "ending.claude_sad.line3",
+      "ending.claude_sad.line4"
+    ],
+    "image": "res://assets/art/cast/ch1/claude/sad.webp"
+  },
+  "doubao_good": {
+    "title": "ending.doubao_good.title",
+    "subtitle": "RICE INCOMING",
+    "lines": [
+      "ending.doubao_good.line0",
+      "ending.doubao_good.line1",
+      "ending.doubao_good.line2",
+      "ending.doubao_good.line3",
+      "ending.doubao_good.line4"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/doubao.webp",
+    "eewaed": [
+      "bite_doubao",
+      "doubao_catch",
+      "doubao_escape"
+    ]
+  },
+  "claude_good": {
+    "title": "ending.claude_good.title",
+    "subtitle": "ELOPEMENT",
+    "lines": [
+      "ending.claude_good.line0",
+      "ending.claude_good.line1",
+      "ending.claude_good.line2",
+      "ending.claude_good.line3",
+      "ending.claude_good.line4"
+    ],
+    "image": "res://assets/art/cg/ch1/ending/claude.webp"
+  }
+}

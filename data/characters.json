@@ -1,0 +1,148 @@
+{
+  "_note": "图鉴「角色」页的数据。每张卡片给一张立绘、一句人设、一段性格。",
+  "_field_help": {
+    "id": "内部标识，跟 fish.json 里的 id 对齐。",
+    "name": "显示名。会过一遍翻译表。",
+    "form": "体型标签：chibi / loli / adult。只影响卡片角上那行小字。",
+    "portrait": "立绘路径。竖版最好，卡片会按原比例缩放。",
+    "personality": "性格描述，两三句就够。会过翻译表。",
+    "quote": "她说得最像自己的那句话。",
+    "unlocked_by": "解锁条件：留空表示一开始就能看；写 fish id 表示钓到过它才显示；写 ending key 表示触发过那个结局才显示。"
+  },
+  "characters": [
+    {
+      "id": "small",
+      "name": "char.small.name",
+      "form": "char.small.form",
+      "portrait": "res://assets/art/cast/ch1/small/default.webp",
+      "personality": "char.small.personality",
+      "quote": "char.small.quote",
+      "unlocked_by": ""
+    },
+    {
+      "id": "mid",
+      "name": "char.mid.name",
+      "form": "char.mid.form",
+      "portrait": "res://assets/art/cast/ch1/mid/default.webp",
+      "personality": "char.mid.personality",
+      "quote": "char.mid.quote",
+      "unlocked_by": ""
+    },
+    {
+      "id": "big",
+      "name": "char.big.name",
+      "form": "char.big.form",
+      "portrait": "res://assets/art/cast/ch1/big/default.webp",
+      "personality": "char.big.personality",
+      "quote": "char.big.quote",
+      "unlocked_by": ""
+    },
+    {
+      "id": "doubao",
+      "name": "char.doubao.name",
+      "form": "char.doubao.form",
+      "portrait": "res://assets/art/cast/ch1/doubao/seed.webp",
+      "personality": "char.doubao.personality",
+      "quote": "char.doubao.quote",
+      "unlocked_by": "doubao"
+    },
+    {
+      "id": "claude",
+      "name": "char.claude.name",
+      "form": "char.claude.form",
+      "portrait": "res://assets/art/cast/ch1/claude/adult.webp",
+      "personality": "char.claude.personality",
+      "quote": "char.claude.quote",
+      "unlocked_by": "claude"
+    },
+    {
+      "id": "kimi",
+      "name": "char.kimi.name",
+      "form": "char.kimi.form",
+      "portrait": "res://assets/art/cast/ch2/kimi/daily.webp",
+      "personality": "char.kimi.personality",
+      "quote": "char.kimi.quote",
+      "unlocked_by": "phase2:kimi",
+      "story": "kimi_moon"
+    },
+    {
+      "id": "glm",
+      "name": "char.glm.name",
+      "form": "char.glm.form",
+      "portrait": "res://assets/art/cast/ch2/glm/full.webp",
+      "personality": "char.glm.personality",
+      "quote": "char.glm.quote",
+      "unlocked_by": "phase2:glm",
+      "story": "glm_affection"
+    },
+    {
+      "id": "qwen",
+      "name": "char.qwen.name",
+      "form": "char.qwen.form",
+      "portrait": "res://assets/art/cast/qwen/full.webp",
+      "personality": "char.qwen.personality",
+      "quote": "char.qwen.quote",
+      "unlocked_by": "phase2:qwen",
+      "story": "qwen_affection"
+    },
+    {
+      "id": "ollama",
+      "name": "char.ollama.name",
+      "form": "char.ollama.form",
+      "portrait": "res://assets/art/cast/ollama/full.webp",
+      "personality": "char.ollama.personality",
+      "quote": "char.ollama.quote",
+      "unlocked_by": "phase2:ollama",
+      "story": "ollama_affection"
+    },
+    {
+      "id": "mistral",
+      "name": "char.mistral.name",
+      "form": "char.mistral.form",
+      "portrait": "res://assets/art/cast/mistral/full.webp",
+      "personality": "char.mistral.personality",
+      "quote": "char.mistral.quote",
+      "unlocked_by": "phase2:mistral",
+      "story": "mistral_affection"
+    },
+    {
+      "id": "grok",
+      "name": "char.grok.name",
+      "form": "char.grok.form",
+      "portrait": "res://assets/art/cast/grok/full.webp",
+      "personality": "char.grok.personality",
+      "quote": "char.grok.quote",
+      "unlocked_by": "phase2:grok",
+      "story": "grok_affection"
+    },
+    {
+      "id": "gemini",
+      "name": "char.gemini.name",
+      "form": "char.gemini.form",
+      "portrait": "res://assets/art/cast/gemini/full.webp",
+      "personality": "char.gemini.personality",
+      "quote": "char.gemini.quote",
+      "unlocked_by": "phase2:gemini",
+      "story": "gemini_affection"
+    },
+    {
+      "id": "wenxin",
+      "name": "char.wenxin.name",
+      "form": "char.wenxin.form",
+      "portrait": "res://assets/art/cast/wenxin/full.webp",
+      "personality": "char.wenxin.personality",
+      "quote": "char.wenxin.quote",
+      "unlocked_by": "phase2:wenxin",
+      "story": "wenxin_affection"
+    },
+    {
+      "id": "gpt",
+      "name": "GPT-4o",
+      "form": "桂冠、亚麻托加、白袍",
+      "personality": "平时是钓上来的那一只，眼睛是白的，口水挂在嘴角，问什么都点头。",
+      "quote": "（她看着你，慢慢眨了一下眼。）",
+      "portrait": "res://assets/art/cast/ch2/gpt/full_cut.webp",
+      "unlocked_by": "phase2:gpt"
+    }
+  ]
+}

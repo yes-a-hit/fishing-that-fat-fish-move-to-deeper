@@ -1,0 +1,43 @@
+{
+  "_doc": "好感度分档与 buff。affection 是 0..100，达到 min 就生效。",
+  "tiers": [
+    {
+      "min": 0,
+      "id": "stranger",
+      "name": "点头之交",
+      "buff": {}
+    },
+    {
+      "min": 30,
+      "id": "warm",
+      "name": "熟了",
+      "buff": {
+        "haul_bonus": 0.1
+      }
+    },
+    {
+      "min": 60,
+      "id": "close",
+      "name": "贴着走",
+      "buff": {
+        "haul_bonus": 0.2,
+        "bait_bonus": 1
+      }
+    },
+    {
+      "min": 90,
+      "id": "sweetheart",
+      "name": "只认你",
+      "buff": {
+        "haul_bonus": 0.35,
+        "bait_bonus": 1,
+        "rare_bonus": 0.05
+      }
+    }
+  ],
+  "start_full": [
+    "claude",
+    "ds",
+    "seed"
+  ]
+}

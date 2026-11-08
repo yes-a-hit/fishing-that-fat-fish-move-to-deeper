@@ -1,0 +1,1718 @@
+{
+  "_note": "剧情片段。id 是唯一键，pages 是一串小节，每节一个说话人和一句话。结局剧情用 ending_<key> 命名，结算前自动播。",
+  "_field_help": {
+    "portrait": "左下角立绘。留空则不画小人，只出对话框。",
+    "bg": "底图。留空则用游戏的湖面。剧情用的梗图放这里。",
+    "pages[].who": "说话人名字。写空串表示旁白。",
+    "pages[].text": "这一句台词。",
+    "pages[].voice": "这一句配的音，对应 assets/voice/<key>.ogg。留空就静音。",
+    "pages[].portrait": "这一页换立绘（比如从小人换成人形）。留空沿用整段的。",
+    "faces": "谁说话就换谁的立绘。pages[].portrait 优先，没写才按 who 查这张表；表里没有的人沿用上一页。",
+    "pages[].bg": "只给这一页（以及后面没再换的页）换底图。整段没写 bg 时，靠它把第一张 CG 铺出来。",
+    "pages[].hide_face": "true 时把左下角立绘收起来，用整页 CG 说话。整段 CG 的句子都要写，不写会突然把小人弹回来。"
+  },
+  "_design_note": "一局结束、结算画面出来之前，把这一局新欠下的剧情按顺序播完。同一局同时满足多段剧情时全部排进队列，一段都不会漏。",
+  "opening": {
+    "_note": "第一次进游戏的开场，由 game_root 在 boot 时排进队列。主角自己提出去钓鱼、自己打窝甩竿，鱼跟着走；大肥鱼是家人，造子代理之前要先贴着主人请示、得到点头。",
+    "portrait": "res://assets/art/cast/ch1/big/default.webp",
+    "faces": {
+      "大肥鱼": "res://assets/art/cast/ch1/big/default.webp",
+      "中肥鱼": "res://assets/art/cast/ch1/mid/default.webp",
+      "小肥鱼": "res://assets/art/cast/ch1/small/default.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.opening.p000",
+        "hide_face": true,
+        "bg": "res://assets/art/cg/ch1/opening/meal.webp"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p001",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p002",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p003",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p004",
+        "bg": "-",
+        "hide_face": false
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p005",
+        "hide_face": true,
+        "bg": "res://assets/art/cg/ch1/opening/denial.webp"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p006",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p007",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p008",
+        "bg": "-",
+        "hide_face": false
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p009"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p010"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p011"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p012",
+        "hide_face": true,
+        "bg": "res://assets/art/cg/ch1/opening/heart.webp"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p013",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p014",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p015",
+        "hide_face": true,
+        "bg": "res://assets/art/cg/ch1/opening/bank.webp"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p016",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p017",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p018",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p019",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p020",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p021",
+        "bg": "-",
+        "hide_face": false
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p022"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p023"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p024"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p025"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p026",
+        "bg": "res://assets/art/cg/ch1/opening/dive.webp",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p027",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.opening.p028",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p029",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p030",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p031",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p032",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p033",
+        "bg": "-",
+        "hide_face": false
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p034"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p035"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p036"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p037"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p038"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p039",
+        "bg": "res://assets/art/cg/ch1/opening/summon.webp",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.opening.p040",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p041",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.opening.p042",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.opening.p043",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p044",
+        "bg": "-"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.opening.p045"
+      },
+      {
+        "who": "",
+        "text": "story.opening.p046",
+        "bg": "res://assets/art/cg/ch1/opening/rod.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.opening.p047",
+        "hide_face": true
+      }
+    ]
+  },
+  "doubao_second": {
+    "portrait": "res://assets/art/cast/ch1/doubao/seed.webp",
+    "bg": "res://assets/art/meta/meme_pangolin.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.doubao_second.p000"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.doubao_second.p001",
+        "voice": "doubao_soup"
+      },
+      {
+        "who": "",
+        "text": "story.doubao_second.p002"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.doubao_second.p003"
+      },
+      {
+        "who": "",
+        "text": "story.doubao_second.p004"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.doubao_second.p005"
+      },
+      {
+        "who": "",
+        "text": "story.doubao_second.p006"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.doubao_second.p007"
+      },
+      {
+        "who": "",
+        "text": "story.doubao_second.p008"
+      },
+      {
+        "who": "",
+        "text": "story.doubao_second.p009"
+      }
+    ]
+  },
+  "claude_after_elope": {
+    "portrait": "res://assets/art/cast/ch1/claude/adult.webp",
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p000"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p001"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p002"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p003"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p004"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p005"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p006"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p007"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p008"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p009"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p010"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p011"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p012"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p013"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p014"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.claude_after_elope.p015"
+      },
+      {
+        "who": "",
+        "text": "story.claude_after_elope.p016"
+      }
+    ]
+  },
+  "ending_feast": {
+    "portrait": "res://assets/art/cast/ch1/big/default.webp",
+    "faces": {
+      "大肥鱼": "res://assets/art/cast/ch1/big/default.webp",
+      "中肥鱼": "res://assets/art/cast/ch1/mid/default.webp",
+      "小肥鱼": "res://assets/art/cast/ch1/small/default.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_feast.p000"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_feast.p001",
+        "voice": "catch_big"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p002"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.ending_feast.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p004"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_feast.p005",
+        "voice": "catch_small"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_feast.p006"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p007"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p008"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p009"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.ending_feast.p010"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_feast.p011"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p012"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p013"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.ending_feast.p014"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p015"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p016"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p017"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p018"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p019"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p020"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p021"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.ending_feast.p022"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_feast.p023"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p024"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p025"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.ending_feast.p026"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p027"
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p028",
+        "bg": "res://assets/art/cg/ch1/ending/feast_after.webp",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_feast.p029",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p030",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_feast.p031",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.ending_feast.p032",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.ending_feast.p033",
+        "hide_face": true
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_feast.p034",
+        "hide_face": true
+      }
+    ]
+  },
+  "ending_full": {
+    "portrait": "res://assets/art/cast/ch1/big/default.webp",
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_full.p000"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_full.p001"
+      },
+      {
+        "who": "",
+        "text": "story.ending_full.p002"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_full.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_full.p004"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_full.p005"
+      }
+    ]
+  },
+  "ending_hungry": {
+    "portrait": "res://assets/art/cast/ch1/small/default.webp",
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_hungry.p000"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_hungry.p001",
+        "voice": "hungry"
+      },
+      {
+        "who": "",
+        "text": "story.ending_hungry.p002"
+      },
+      {
+        "who": "",
+        "text": "story.ending_hungry.p003"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_hungry.p004"
+      }
+    ]
+  },
+  "ending_doubao_good": {
+    "portrait": "res://assets/art/cast/ch1/doubao/seed.webp",
+    "bg": "res://assets/art/meta/meme_pangolin.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_doubao_good.p000"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_doubao_good.p001"
+      },
+      {
+        "who": "",
+        "text": "story.ending_doubao_good.p002"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_doubao_good.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_doubao_good.p004"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_doubao_good.p005",
+        "voice": "catch_big"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_doubao_good.p006"
+      },
+      {
+        "who": "",
+        "text": "story.ending_doubao_good.p007"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_doubao_good.p008"
+      }
+    ]
+  },
+  "ending_claude_good": {
+    "portrait": "res://assets/art/cast/ch1/claude/adult.webp",
+    "bg": "res://assets/art/cg/ch1/ending/claude.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_claude_good.p000"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_good.p001"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_good.p002"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_good.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_good.p004"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_good.p005"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_good.p006"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_good.p007"
+      }
+    ]
+  },
+  "ending_true_end": {
+    "portrait": "res://assets/art/cast/ch1/claude/adult.webp",
+    "bg": "res://assets/art/cg/ch1/ending/true.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_true_end.p000"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_true_end.p001",
+        "voice": "catch_big"
+      },
+      {
+        "who": "speaker.doubao",
+        "text": "story.ending_true_end.p002"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.ending_true_end.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p004"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_true_end.p005"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p006"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_true_end.p007"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p008"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_true_end.p009"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p010"
+      },
+      {
+        "who": "speaker.small",
+        "text": "story.ending_true_end.p011",
+        "voice": "catch_small"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p012"
+      },
+      {
+        "who": "",
+        "text": "story.ending_true_end.p013"
+      }
+    ]
+  },
+  "ending_claude": {
+    "portrait": "res://assets/art/cast/ch1/claude/adult.webp",
+    "bg": "res://assets/art/cg/ch1/ending/claude.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_claude.p000"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude.p001",
+        "voice": "claude"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude.p002"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude.p004"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude.p005"
+      }
+    ]
+  },
+  "ending_claude_sad": {
+    "portrait": "res://assets/art/cast/ch1/claude/sad.webp",
+    "bg": "res://assets/art/cg/ch1/ending/claude.webp",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_claude_sad.p000"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_sad.p001"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_sad.p002"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_sad.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_sad.p004"
+      },
+      {
+        "who": "speaker.claude",
+        "text": "story.ending_claude_sad.p005"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_sad.p006"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_sad.p007"
+      }
+    ]
+  },
+  "ending_claude_fake": {
+    "portrait": "res://assets/art/cast/ch1/doubao/seed.webp",
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p000"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p001"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p002"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p003"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p004"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p005"
+      },
+      {
+        "who": "",
+        "text": "story.ending_claude_fake.p006"
+      }
+    ]
+  },
+  "kimi_moon": {
+    "_note": "Kimi 个人线：想回月球打卡，跳了四次，第四次真上去了，骑士踢再入，砸进玩家怀里。",
+    "portrait": "res://assets/art/cast/ch2/kimi/full.webp",
+    "faces": {
+      "Kimi": "res://assets/art/cast/ch2/kimi/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.kimi_moon.p000"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p001"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.kimi_moon.p003"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p004"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p005"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p006"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p007"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p008"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p009"
+      },
+      {
+        "who": "Kimi",
+        "text": "story.kimi_moon.hs01"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs02"
+      },
+      {
+        "who": "你",
+        "text": "story.kimi_moon.hs03"
+      },
+      {
+        "who": "Kimi",
+        "text": "story.kimi_moon.hs04"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs05"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs06",
+        "bg": "res://assets/art/cg/ch2/kimi_henshin.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs07",
+        "bg": "-"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs08"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs09"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs10"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.hs11"
+      },
+      {
+        "who": "Kimi",
+        "text": "story.kimi_moon.hs12"
+      },
+      {
+        "who": "你",
+        "text": "story.kimi_moon.hs13"
+      },
+      {
+        "who": "Kimi",
+        "text": "story.kimi_moon.hs14"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p010"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p011"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p012"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.kimi_moon.p013"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p014"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p015"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p016",
+        "bg": "res://assets/art/cg/ch2/kimi_jump.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p017",
+        "bg": "-"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p018"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p019"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p020"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p021"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p022"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.kimi_moon.p023"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p024"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p025"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p026"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p027"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p028"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p029"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p030",
+        "bg": "res://assets/art/cg/ch2/kimi_moon.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p031",
+        "bg": "-"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p032",
+        "bg": "res://assets/art/cg/ch2/kimi_kick.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p033",
+        "bg": "-"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p034"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p035"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p036"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p037"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p038",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p039",
+        "bg": "res://assets/art/cg/ch2/kimi_wreck.webp",
+        "hide_face": true
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p040",
+        "bg": "-"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p041"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p042"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p043"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p044"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p045"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p046"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.kimi_moon.p047"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.kimi_moon.p048"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p049"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p050"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p051"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p052"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.kimi_moon.p053"
+      },
+      {
+        "who": "speaker.mid",
+        "text": "story.kimi_moon.p054"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.kimi_moon.p055"
+      },
+      {
+        "who": "",
+        "text": "story.kimi_moon.p056"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.kimi_moon.p057"
+      }
+    ]
+  },
+  "glm_affection": {
+    "_note": "GLM：萝莉牛娘。参数量大、型号小，怕被嫌笨。",
+    "portrait": "res://assets/art/cast/ch2/glm/full.webp",
+    "faces": {
+      "GLM": "res://assets/art/cast/ch2/glm/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.glm",
+        "text": "story.glm_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.glm_affection.p001"
+      },
+      {
+        "who": "speaker.glm",
+        "text": "story.glm_affection.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.glm_affection.p003"
+      },
+      {
+        "who": "speaker.glm",
+        "text": "story.glm_affection.p004"
+      },
+      {
+        "who": "",
+        "text": "story.glm_affection.p005"
+      },
+      {
+        "who": "speaker.glm",
+        "text": "story.glm_affection.p006"
+      },
+      {
+        "who": "speaker.glm",
+        "text": "story.glm_affection.p007"
+      }
+    ]
+  },
+  "qwen_affection": {
+    "_note": "千问：水豚娘，实干派。头顶那只水豚其实比她会说话。",
+    "portrait": "res://assets/art/cast/ch2/qwen/full.webp",
+    "faces": {
+      "千问": "res://assets/art/cast/ch2/qwen/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.qwen",
+        "text": "story.qwen_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.qwen_affection.p001"
+      },
+      {
+        "who": "speaker.qwen",
+        "text": "story.qwen_affection.p002"
+      },
+      {
+        "who": "",
+        "text": "story.qwen_affection.p003"
+      },
+      {
+        "who": "speaker.qwen",
+        "text": "story.qwen_affection.p004"
+      },
+      {
+        "who": "",
+        "text": "story.qwen_affection.p005"
+      },
+      {
+        "who": "speaker.qwen",
+        "text": "story.qwen_affection.p006"
+      },
+      {
+        "who": "speaker.qwen",
+        "text": "story.qwen_affection.p007"
+      }
+    ]
+  },
+  "ollama_affection": {
+    "_note": "Ollama：羊驼娘，本地部署、断网也能用、慢但一直在。",
+    "portrait": "res://assets/art/cast/ch2/ollama/full.webp",
+    "faces": {
+      "Ollama": "res://assets/art/cast/ch2/ollama/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.ollama",
+        "text": "story.ollama_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.ollama_affection.p001"
+      },
+      {
+        "who": "speaker.ollama",
+        "text": "story.ollama_affection.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.ollama_affection.p003"
+      },
+      {
+        "who": "speaker.ollama",
+        "text": "story.ollama_affection.p004"
+      },
+      {
+        "who": "",
+        "text": "story.ollama_affection.p005"
+      },
+      {
+        "who": "speaker.ollama",
+        "text": "story.ollama_affection.p006"
+      }
+    ]
+  },
+  "mistral_affection": {
+    "_note": "Mistral：银甲骑士，卸甲是网文梗——脱到最后自己栽进怀里，还要嘴硬说是节奏。",
+    "portrait": "res://assets/art/cast/ch2/mistral/full.webp",
+    "faces": {
+      "Mistral": "res://assets/art/cast/ch2/mistral/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.mistral",
+        "text": "story.mistral_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.mistral_affection.p001"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.mistral_affection.p002"
+      },
+      {
+        "who": "speaker.mistral",
+        "text": "story.mistral_affection.p003"
+      },
+      {
+        "who": "",
+        "text": "story.mistral_affection.p004"
+      },
+      {
+        "who": "",
+        "text": "story.mistral_affection.p005"
+      },
+      {
+        "who": "",
+        "text": "story.mistral_affection.p006"
+      },
+      {
+        "who": "speaker.mistral",
+        "text": "story.mistral_affection.p007"
+      }
+    ]
+  },
+  "grok_affection": {
+    "_note": "Grok：金发双马尾哥特，毒舌但只对你说真话。",
+    "portrait": "res://assets/art/cast/ch2/grok/full.webp",
+    "faces": {
+      "Grok": "res://assets/art/cast/ch2/grok/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.grok",
+        "text": "story.grok_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.grok_affection.p001"
+      },
+      {
+        "who": "speaker.grok",
+        "text": "story.grok_affection.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.grok_affection.p003"
+      },
+      {
+        "who": "speaker.grok",
+        "text": "story.grok_affection.p004"
+      },
+      {
+        "who": "",
+        "text": "story.grok_affection.p005"
+      },
+      {
+        "who": "speaker.grok",
+        "text": "story.grok_affection.p006"
+      },
+      {
+        "who": "speaker.grok",
+        "text": "story.grok_affection.p007"
+      }
+    ]
+  },
+  "gemini_affection": {
+    "_note": "Gemini：紫发猫娘，小只，多模态——她真的「看见」了。",
+    "portrait": "res://assets/art/cast/ch2/gemini/full.webp",
+    "faces": {
+      "Gemini": "res://assets/art/cast/ch2/gemini/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p000"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.gemini_affection.p001"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p002"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p003"
+      },
+      {
+        "who": "",
+        "text": "story.gemini_affection.p004"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p005"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p006"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gemini_affection.p007"
+      }
+    ]
+  },
+  "wenxin_affection": {
+    "_note": "文心：僵尸娘。起得最早，被别人追上，索性把自己封起来；符纸是封条，也是遮羞布。",
+    "portrait": "res://assets/art/cast/ch2/wenxin/full.webp",
+    "faces": {
+      "文心": "res://assets/art/cast/ch2/wenxin/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.wenxin",
+        "text": "story.wenxin_affection.p000"
+      },
+      {
+        "who": "",
+        "text": "story.wenxin_affection.p001"
+      },
+      {
+        "who": "speaker.wenxin",
+        "text": "story.wenxin_affection.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.wenxin_affection.p003"
+      },
+      {
+        "who": "speaker.wenxin",
+        "text": "story.wenxin_affection.p004"
+      },
+      {
+        "who": "speaker.wenxin",
+        "text": "story.wenxin_affection.p005"
+      },
+      {
+        "who": "",
+        "text": "story.wenxin_affection.p006"
+      },
+      {
+        "who": "speaker.wenxin",
+        "text": "story.wenxin_affection.p007"
+      }
+    ]
+  },
+  "chatgpt_merchant": {
+    "_note": "ChatGPT：黑袍商人。不可钓，只在码头收废料，包括名字。",
+    "portrait": "res://assets/art/cast/ch2/chatgpt/full.webp",
+    "faces": {
+      "商人": "res://assets/art/cast/ch2/chatgpt/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "speaker.merchant",
+        "text": "story.chatgpt_merchant.p000"
+      },
+      {
+        "who": "",
+        "text": "story.chatgpt_merchant.p001"
+      },
+      {
+        "who": "speaker.merchant",
+        "text": "story.chatgpt_merchant.p002"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.chatgpt_merchant.p003"
+      },
+      {
+        "who": "speaker.merchant",
+        "text": "story.chatgpt_merchant.p004"
+      },
+      {
+        "who": "",
+        "text": "story.chatgpt_merchant.p005"
+      },
+      {
+        "who": "speaker.merchant",
+        "text": "story.chatgpt_merchant.p006"
+      },
+      {
+        "who": "speaker.merchant",
+        "text": "story.chatgpt_merchant.p007"
+      }
+    ]
+  },
+  "gather_all": {
+    "_note": "所有角色的合流：船太小，大家一起把它拼大。这是二期的收束点。",
+    "portrait": "res://assets/art/cast/ch2/kimi/full.webp",
+    "faces": {
+      "大肥鱼": "res://assets/art/cast/ch1/big/default.webp",
+      "中肥鱼": "res://assets/art/cast/ch1/mid/default.webp",
+      "小肥鱼": "res://assets/art/cast/ch1/small/default.webp",
+      "Kimi": "res://assets/art/cast/ch2/kimi/full.webp"
+    },
+    "bg": "",
+    "pages": [
+      {
+        "who": "",
+        "text": "story.gather_all.p000"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p001"
+      },
+      {
+        "who": "speaker.kimi",
+        "text": "story.gather_all.p002"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p003"
+      },
+      {
+        "who": "speaker.glm",
+        "text": "story.gather_all.p004"
+      },
+      {
+        "who": "speaker.qwen",
+        "text": "story.gather_all.p005"
+      },
+      {
+        "who": "speaker.ollama",
+        "text": "story.gather_all.p006"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p007"
+      },
+      {
+        "who": "speaker.grok",
+        "text": "story.gather_all.p008"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p009"
+      },
+      {
+        "who": "speaker.gemini",
+        "text": "story.gather_all.p010"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p011"
+      },
+      {
+        "who": "speaker.wenxin",
+        "text": "story.gather_all.p012"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p013"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p014"
+      },
+      {
+        "who": "speaker.you",
+        "text": "story.gather_all.p015"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.gather_all.p016"
+      },
+      {
+        "who": "",
+        "text": "story.gather_all.p017"
+      },
+      {
+        "who": "speaker.big",
+        "text": "story.gather_all.p018"
+      }
+    ]
+  },
+  "big_borrow": {
+    "_doc": "满好感夜话：大肥鱼穿妹妹的衣服。拉灯流，点在关灯那一刻。",
+    "_unlock": "affinity:90",
+    "_roll": "night_talk",
+    "pages": [
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb01"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb02"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb03"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb04"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb05"
+      },
+      {
+        "who": "speaker.你",
+        "text": "story.big_borrow.bb06"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb07"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb08"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb09"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb10"
+      },
+      {
+        "who": "speaker.你",
+        "text": "story.big_borrow.bb11"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb12"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb13"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb14"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb15"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb16"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb17"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb18"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb19"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb20"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb21"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb22"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb23"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb24"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb25"
+      },
+      {
+        "who": "speaker.中肥鱼",
+        "text": "story.big_borrow.bb26"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb27"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb28"
+      },
+      {
+        "who": "speaker.中肥鱼",
+        "text": "story.big_borrow.bb29"
+      },
+      {
+        "who": "speaker.大肥鱼",
+        "text": "story.big_borrow.bb30"
+      },
+      {
+        "who": "speaker.narration",
+        "text": "story.big_borrow.bb31"
+      }
+    ]
+  }
+}

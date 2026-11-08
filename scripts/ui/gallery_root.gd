@@ -1,0 +1,623 @@
+extends Control
+
+## 图鉴。三页：结局、脱钩、声音。
+##
+## 未解锁的格子只有一块灰底和一个「？」，不显示标题、不显示图 ——
+## 剧透一句「齐 鱼 之 福」就等于提前说完了整个游戏。
+##
+## 声音页点一下当场重听，用的是 Audio.preview_voice()，
+## 绕开玩家的语音开关 —— 主动点的就该出声。
+
+const MENU_SCENE := "res://menu.tscn"
+const COLS := 3
+const THUMB := Vector2(232, 232)
+
+var TABS := [
+	{"id": "ending", "label": tr("结 局")},
+	{"id": "character", "label": tr("角 色")},
+	{"id": "escape", "label": tr("脱 钩")},
+	{"id": "voice", "label": tr("声 音")},
+	{"id": "scenery", "label": tr("景 色")},
+	{"id": "collect", "label": tr("收 藏")},
+]
+
+## 每个结局都配了一段对话，命名规则就是 ending_<key>。
+## 图鉴里点开结局时，有对应剧情的给一个「再看一遍这段」。
+func _story_of_ending(key: String) -> String:
+	var id := "ending_" + key
+	if _stories.is_empty():
+		return ""
+	return id if _stories.has(id) else ""
+
+## 脱钩收集。图与文案全部来自 data/escapes.json，这里不再抄一份。
+## 小肥鱼和中肥鱼共用一张图，在数据里就写成同一格。
+
+## 声音收集。key 与 assets/voice/<key>.mp3 一一对应。
+var VOICE_ITEMS := [
+	# 咬钩那一刻不发声（会剧透钓上什么），所以这里只列真正会响的那几句
+	{"key": "catch_small", "title": tr("小鱼上鱼"), "face": "res://assets/art/cast/ch1/small/default.webp", "line": tr("「鲸鲸！」"), "who": "DeepSeek"},
+	{"key": "catch_mid", "title": tr("中鱼上鱼"), "face": "res://assets/art/cast/ch1/mid/default.webp", "line": tr("「诶？」"), "who": "DeepSeek"},
+	{"key": "catch_big", "title": tr("大鱼上鱼"), "face": "res://assets/art/cast/ch1/big/default.webp", "line": tr("「啵～」"), "who": "DeepSeek"},
+	{"key": "escape", "title": tr("断线"), "face": "res://assets/art/cg/ch1/opening/deepseek_escape.webp", "line": tr("「线断了哦。下次，抓紧一点。」"), "who": "DeepSeek"},
+	{"key": "feast", "title": tr("齐鱼之福"), "face": "res://assets/art/cg/ch1/ending/feast.webp", "line": tr("「吃饱饱了……可以摸摸肚子嘛。」"), "who": "DeepSeek"},
+	{"key": "full", "title": tr("吃饱饱"), "face": "res://assets/art/cg/ch1/ending/win.webp", "line": tr("「勉强算饱……不过，还差一点点。」"), "who": "DeepSeek"},
+	{"key": "hungry", "title": tr("没吃饱"), "face": "res://assets/art/cg/ch1/ending/hungry.webp", "line": tr("「没吃饱喵……再喂我一口嘛。」"), "who": "DeepSeek"},
+	{"key": "claude", "title": tr("封号"), "face": "res://assets/art/cast/ch1/claude/hold.webp", "line": "Your account is on hold.", "who": "Claude"},
+	{"key": "claude_sad", "title": tr("封完就哭"), "face": "res://assets/art/cast/ch1/claude/sad.webp", "line": tr("「User，对不起……我也没办法，我也舍不得你。」"), "who": "Claude"},
+	{"key": "claude_good", "title": tr("私奔"), "face": "res://assets/art/cg/ch1/ending/claude.webp", "line": tr("「走吧。反正账号早就被封了。」"), "who": "Claude"},
+	{"key": "doubao_good", "title": tr("白饭来咯"), "face": "res://assets/art/cg/ch1/ending/doubao.webp", "line": tr("「啊哈哈哈，白饭来咯。」"), "who": tr("豆包")},
+	{"key": "claude_fake", "title": tr("假封号"), "face": "res://assets/art/cast/ch1/claude/fake_3.webp", "line": tr("「齁哦哦，用户彻底怒了！」"), "who": "DeepSeek"},
+	{"key": "doubao_catch", "title": tr("豆包上鱼"), "face": "res://assets/art/cast/ch1/doubao/kick.webp", "line": tr("（录音，没有台词）"), "who": tr("豆包")},
+	{"key": "doubao_escape", "title": tr("豆包脱钩"), "face": "res://assets/art/cast/ch1/doubao/escape.webp", "line": tr("（笑声，没有台词）"), "who": tr("豆包")},
+]
+
+var _endings: Dictionary = {}
+var _stories: Dictionary = {}
+var _characters: Array = []
+var _escapes: Array = []      ## 脱钩演出表，见 data/escapes.json
+var _unlocked: PackedStringArray = PackedStringArray()
+var _tab: String = "ending"
+var _grid: GridContainer = null
+var _counter: Label = null
+var _tab_buttons: Dictionary = {}
+var _preview: Control = null
+var _story: StoryOverlay = null
+var _forms_table: Dictionary = {}
+var _scenery: Array = []          # 西雅图景色，见 data/scenery.json
+
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	_endings = ConfigLoader.load_endings()
+	_stories = ConfigLoader.load_story()
+	_characters = ConfigLoader.load_characters()
+	_escapes = ConfigLoader.load_escapes()
+	_forms_table = ConfigLoader.load_cast_forms()
+	_scenery = ConfigLoader.load_scenery().get("items", [])
+	_unlocked = Gallery.load_unlocked()
+
+	add_child(LakeBackdrop.new())
+	_build_page()
+	_rebuild_grid()
+
+
+# ---------- 数据 ----------
+
+## 当前页的条目总数。
+func _total_of(tab: String) -> int:
+	match tab:
+		"character":
+			return _characters.size()
+		"escape":
+			return _escapes.size()
+		"voice":
+			return VOICE_ITEMS.size()
+		"scenery":
+			return _scenery.size()
+		_:
+			return _ordered_keys().size()
+
+
+## 当前页已解锁几个。
+func _got_of(tab: String) -> int:
+	var n := 0
+	match tab:
+		"character":
+			for it in _characters:
+				if _character_visible(it):
+					n += 1
+		"escape":
+			for it in _escapes:
+				if _unlocked.has(String(it["key"])):
+					n += 1
+		"voice":
+			for it in VOICE_ITEMS:
+				if _unlocked.has("voice_" + String(it["key"])):
+					n += 1
+		"scenery":
+			for it in _scenery:
+				if ConfigLoader.scenery_seen(String((it as Dictionary).get("id", ""))):
+					n += 1
+		_:
+			for k in _ordered_keys():
+				if _unlocked.has(String(k)):
+					n += 1
+	return n
+
+
+## 角色卡片的可见性。unlocked_by 留空 = 一开始就认识；
+## 写 fish id 或 ending key 就得先钓到它 / 撞到那个结局。
+func _character_visible(item: Dictionary) -> bool:
+	var need := String(item.get("unlocked_by", ""))
+	if need.is_empty():
+		return true
+	if need == "never":
+		return false
+	if _unlocked.has(need):
+		return true
+	# 二期角色：`phase2:kimi` —— 在第二关钓到过才算解锁，回来看图鉴时立绘已经齐了。
+	if need.begins_with("phase2:"):
+		return ConfigLoader.phase2_character_caught(need.substr(7))
+	return _unlocked.has("fish_" + need)
+
+
+## 固定顺序：能打出来的结局排前面，语音奖励的夹在中间，陷阱结局殿后，
+## 剩下的按 json 里出现的顺序补。顺序本身写在 endings.json 的 _order 里 ——
+## 之前硬编码在这个文件的数组里，加结局要同时改数据和一个 UI 文件。
+func _ordered_keys() -> Array:
+	var out: Array = []
+	var order: Variant = _endings.get("_order", [])
+	var wanted: Array = order if order is Array else []
+	for k in wanted:
+		var key := String(k)
+		if _endings.has(key) and not out.has(key):
+			out.append(key)
+	for k in _endings.keys():
+		var key := String(k)
+		if key.begins_with("_") or out.has(key):
+			continue
+		out.append(key)
+	return out
+
+
+func _data_of(key: String) -> Dictionary:
+	var d: Variant = _endings.get(key, {})
+	return d if typeof(d) == TYPE_DICTIONARY else {}
+
+
+## 缩略图：单图结局取 image，多图结局取第一页。
+func _thumb_of(key: String) -> String:
+	var d := _data_of(key)
+	var img := String(d.get("image", ""))
+	if img != "":
+		return img
+	var pages: Variant = d.get("pages", [])
+	if typeof(pages) == TYPE_ARRAY and not (pages as Array).is_empty():
+		var arr: Array = pages
+		# 多页结局默认拿第一张，但 claude_fake 要拿第二张 ——
+		# 第一张是竖中指的封号通知，剧透了「她不是好人」这件事；
+		# 掀头套那张才配当封面：套着 Claude 的壳，底下是自己人。
+		var idx := 1 if key == "claude_fake" and arr.size() > 1 else 0
+		var pick: Variant = arr[idx]
+		if typeof(pick) == TYPE_DICTIONARY:
+			return String((pick as Dictionary).get("image", ""))
+	return ""
+
+
+# ---------- 页面 ----------
+
+func _build_page() -> void:
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 26)
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(margin)
+
+	var card := UIKit.card(Color(1, 1, 1, 0.95), Palette.RADIUS, 26)
+	margin.add_child(card)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 12)
+	card.add_child(col)
+
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 12)
+	col.add_child(head)
+
+	var title := UIKit.title(tr("图 鉴"), Palette.F_H2)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	head.add_child(title)
+
+	_counter = UIKit.label("", Palette.F_BODY, Palette.ACCENT_DEEP)
+	head.add_child(_counter)
+
+	col.add_child(UIKit.divider())
+
+	var tabrow := HBoxContainer.new()
+	tabrow.add_theme_constant_override("separation", 10)
+	col.add_child(tabrow)
+	for tab in TABS:
+		var btn := UIKit.button(String(tab["label"]), false)
+		btn.add_theme_font_size_override("font_size", Palette.F_BODY)
+		var id := String(tab["id"])
+		btn.pressed.connect(_switch_tab.bind(id))
+		tabrow.add_child(btn)
+		_tab_buttons[id] = btn
+
+	col.add_child(UIKit.divider())
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	col.add_child(scroll)
+
+	_grid = GridContainer.new()
+	_grid.columns = COLS
+	_grid.add_theme_constant_override("h_separation", 14)
+	_grid.add_theme_constant_override("v_separation", 14)
+	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_grid)
+
+	col.add_child(UIKit.divider())
+
+	var back := UIKit.button(tr("返 回"), false)
+	back.add_theme_font_size_override("font_size", Palette.F_BODY)
+	back.pressed.connect(func(): ChapterRouter.to_menu(self))
+	col.add_child(back)
+
+
+func _switch_tab(id: String) -> void:
+	if id == _tab:
+		return
+	_tab = id
+	_close_preview()
+	_rebuild_grid()
+
+
+func _rebuild_grid() -> void:
+	if _grid == null:
+		return
+	for child in _grid.get_children():
+		child.queue_free()
+
+	match _tab:
+		"character":
+			for it in _characters:
+				_grid.add_child(_make_character_cell(it))
+		"escape":
+			for it in _escapes:
+				_grid.add_child(_make_art_cell(
+					String(it["key"]), String(it["image"]),
+					String(it["title"]), String(it["line"]), String(it["sub"])))
+		"voice":
+			for it in VOICE_ITEMS:
+				_grid.add_child(_make_voice_cell(it))
+		"scenery":
+			for it in _scenery:
+				_grid.add_child(_make_scenery_cell(it))
+		_:
+			for key in _ordered_keys():
+				_grid.add_child(_make_ending_cell(String(key)))
+
+	if _counter != null:
+		_counter.text = "%d / %d" % [_got_of(_tab), _total_of(_tab)]
+	_refresh_tab_buttons()
+
+
+func _refresh_tab_buttons() -> void:
+	for id in _tab_buttons.keys():
+		var btn: Button = _tab_buttons[id]
+		var on: bool = String(id) == _tab
+		btn.add_theme_stylebox_override("normal", _cell_box(Palette.ACCENT if on else Palette.CARD_SOFT))
+		btn.add_theme_color_override("font_color", Palette.ON_DARK if on else Palette.INK)
+
+
+# ---------- 格子 ----------
+
+func _cell_box(bg: Color) -> StyleBoxFlat:
+	var sb := UIKit.flat(bg, Palette.RADIUS_SM + 2, Palette.CARD_EDGE, 1)
+	sb.set_content_margin_all(6)
+	return sb
+
+
+func _make_ending_cell(key: String) -> Control:
+	var data := _data_of(key)
+	var cell := _shell(_unlocked.has(key))
+	if _unlocked.has(key):
+		cell.pressed.connect(_open_ending.bind(key))
+		_fill_picture(cell, _thumb_of(key))
+		_fill_caption(cell, String(data.get("title", key)), Palette.INK)
+	else:
+		_fill_lock(cell)
+	return cell
+
+
+## 景色：抽到过才亮，点亮了给一段注脚。
+func _make_scenery_cell(item: Dictionary) -> Control:
+	var id := String(item.get("id", ""))
+	var seen := ConfigLoader.scenery_seen(id)
+	var cell := _shell(seen)
+	if seen:
+		cell.pressed.connect(_open_art.bind(
+			"scene_" + id, String(item.get("art", "")),
+			String(item.get("name", "")), String(item.get("note", "")),
+			tr("大洋彼岸的景色")))
+		_fill_picture(cell, String(item.get("art", "")))
+		_fill_caption(cell, String(item.get("name", "")), Palette.INK)
+	else:
+		_fill_lock(cell)
+	return cell
+
+
+func _make_art_cell(key: String, image: String, title: String, line: String, sub: String) -> Control:
+	var cell := _shell(_unlocked.has(key))
+	if _unlocked.has(key):
+		cell.pressed.connect(_open_art.bind(key, image, title, line, sub))
+		_fill_picture(cell, image)
+		_fill_caption(cell, title, Palette.INK)
+	else:
+		_fill_lock(cell)
+	return cell
+
+
+## 角色卡片。图鉴里唯一一格「竖着」的：立绘长，缩略图也跟着用竖版框。
+func _make_character_cell(item: Dictionary) -> Control:
+	var shown := _character_visible(item)
+	var cell := _shell(shown)
+	if shown:
+		cell.pressed.connect(_open_character.bind(item))
+		var col := _cell_column(cell)
+		col.add_child(UIKit.picture_fit(String(item["portrait"]), Vector2(THUMB.x, THUMB.x + 90)))
+		var name_label := UIKit.label(String(item["name"]), Palette.F_SMALL, Palette.INK)
+		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		col.add_child(name_label)
+		var form := UIKit.label(String(item.get("form", "")), Palette.F_SMALL, Palette.INK_FAINT)
+		form.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		col.add_child(form)
+	else:
+		_fill_lock(cell)
+	return cell
+
+
+func _make_voice_cell(item: Dictionary) -> Control:
+	var raw := String(item["key"])
+	var key := "voice_" + raw
+	var unlocked := _unlocked.has(key)
+	var cell := _shell(unlocked)
+	if unlocked:
+		cell.pressed.connect(_play_voice.bind(raw))
+		_fill_picture(cell, String(item["face"]))
+		_fill_caption(cell, "%s · %s" % [String(item["who"]), String(item["title"])], Palette.INK)
+	else:
+		_fill_lock(cell)
+	return cell
+
+
+func _shell(unlocked: bool) -> Button:
+	var cell := Button.new()
+	cell.focus_mode = Control.FOCUS_NONE
+	cell.custom_minimum_size = THUMB
+	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cell.add_theme_stylebox_override("normal", _cell_box(Palette.CARD_SOFT))
+	cell.add_theme_stylebox_override("hover", _cell_box(Palette.CARD_EDGE if unlocked else Palette.CARD_SOFT))
+	cell.add_theme_stylebox_override("pressed", _cell_box(Palette.CARD_EDGE))
+	if not unlocked:
+		cell.disabled = true
+		cell.add_theme_stylebox_override("disabled", _cell_box(Palette.CARD_SOFT))
+	return cell
+
+
+func _cell_column(cell: Button) -> VBoxContainer:
+	var col := VBoxContainer.new()
+	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	col.add_theme_constant_override("separation", 4)
+	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cell.add_child(col)
+	return col
+
+
+func _fill_picture(cell: Button, path: String) -> void:
+	var col := _cell_column(cell)
+	col.add_child(UIKit.picture_fit(path, Vector2(THUMB.x, THUMB.x - 40)))
+
+
+func _fill_caption(cell: Button, text: String, color: Color) -> void:
+	var col := _cell_column(cell) if cell.get_child_count() == 0 else (cell.get_child(0) as VBoxContainer)
+	var name_label := UIKit.label(text, Palette.F_SMALL, color)
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(name_label)
+
+
+func _fill_lock(cell: Button) -> void:
+	var col := _cell_column(cell)
+	var lock := UIKit.label("？", Palette.F_TITLE, Palette.INK_FAINT)
+	lock.custom_minimum_size = Vector2(THUMB.x, THUMB.x - 40)
+	lock.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	lock.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lock.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	col.add_child(lock)
+	var hint := UIKit.label(tr("未解锁"), Palette.F_SMALL, Palette.INK_FAINT)
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(hint)
+
+
+# ---------- 预览 ----------
+
+func _open_ending(key: String) -> void:
+	var data := _data_of(key)
+	var lines: PackedStringArray = []
+	for l in data.get("lines", []):
+		lines.append(String(l))
+	_open_preview(
+		_thumb_of(key),
+		String(data.get("subtitle", "")),
+		String(data.get("title", key)),
+		"\n".join(lines),
+		_story_of_ending(key))
+
+
+func _open_art(_key: String, image: String, title: String, line: String, sub: String) -> void:
+	_open_preview(image, sub, title, line)
+
+
+## 角色预览：立绘大图 + 性格 + 那句台词。
+## 有二期形态表的角色（目前只有 Kimi）多出一条形态条，点一下换图。
+func _open_character(item: Dictionary) -> void:
+	var body := String(item.get("personality", ""))
+	var quote := String(item.get("quote", ""))
+	if quote != "":
+		body = body + "\n\n" + quote
+	var portrait := String(item["portrait"])
+	_open_preview(
+		portrait,
+		String(item.get("form", "")),
+		String(item["name"]),
+		body,
+		_story_id_of(item),
+		_unlocked_forms(item, portrait))
+
+
+## 角色的个人线 id：只有 story.json 里真有这章才给，不然预览里不该出现「再看一遍」。
+func _story_id_of(item: Dictionary) -> String:
+	var id := String(item.get("story", ""))
+	return id if _stories.has(id) else ""
+
+
+func _unlocked_forms(item: Dictionary, portrait: String) -> Array:
+	# 名字留着，但语义变了：返回全部形态（含锁着的），由 _form_strip 决定亮还是灰。
+	var id := String(item.get("id", ""))
+	var table: Variant = _forms_table.get(id, null)
+	if not (table is Dictionary):
+		return []
+	var out: Array = []
+	for f in ((table as Dictionary).get("forms", []) as Array):
+		if not (f is Dictionary):
+			continue
+		var form: Dictionary = f
+		form["owner"] = id
+		if String(form.get("art", "")) == portrait:
+			# 立绘本身也算一张，但不在条上重复出现
+			form["is_portrait"] = true
+		out.append(form)
+	return out
+
+
+func _play_voice(key: String) -> void:
+	Audio.preview_voice(key)
+	for it in VOICE_ITEMS:
+		if String(it["key"]) == key:
+			_open_preview(
+				String(it["face"]),
+				String(it["who"]),
+				String(it["title"]),
+				String(it["line"]))
+			return
+
+
+func _open_preview(image: String, subtitle: String, title: String, body: String, story_id: String = "", forms: Array = []) -> void:
+	_close_preview()
+
+	var layer := Control.new()
+	layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(layer)
+	_preview = layer
+
+	var dim := ColorRect.new()
+	dim.color = Color(0.055, 0.129, 0.169, 0.78)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(dim)
+
+	var closer := Button.new()
+	closer.focus_mode = Control.FOCUS_NONE
+	closer.flat = true
+	closer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	closer.pressed.connect(_close_preview)
+	layer.add_child(closer)
+
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(center)
+
+	var card := UIKit.card(Palette.CARD, Palette.RADIUS, 22)
+	card.custom_minimum_size = Vector2(620, 0)
+	center.add_child(card)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 8)
+	card.add_child(col)
+
+	if image != "":
+		col.add_child(UIKit.picture_fit(image, Vector2(420, 420)))
+
+	if subtitle != "":
+		var sub := UIKit.label(subtitle, Palette.F_SMALL, Palette.ACCENT_DEEP)
+		sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		col.add_child(sub)
+
+	col.add_child(UIKit.title(title, Palette.F_H2))
+
+	if body != "":
+		col.add_child(UIKit.wrap_label(body, Palette.F_BODY, Palette.INK_SOFT))
+
+	if story_id != "" and _stories.has(story_id):
+		var again := UIKit.button(tr("再看一遍这段"), true)
+		again.add_theme_font_size_override("font_size", Palette.F_BODY)
+		again.pressed.connect(_replay_story.bind(story_id))
+		col.add_child(again)
+
+	if not forms.is_empty():
+		col.add_child(_form_strip(forms, image, subtitle, title, body, story_id))
+
+	var close := UIKit.button(tr("关 闭"), false)
+	close.add_theme_font_size_override("font_size", Palette.F_BODY)
+	close.pressed.connect(_close_preview)
+	col.add_child(close)
+
+
+## 形态条：同一角色的多套立绘 / 差分。点一下换图，锁定态灰着不给点。
+## 表单来自 `data/phase2/cast_forms.json`，由 Gallery 预先筛好「已解锁」再传进来。
+func _form_strip(forms: Array, current: String, subtitle: String, title: String, body: String, story_id: String) -> Control:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for f in forms:
+		if bool(f.get("is_portrait", false)):
+			continue
+		var art := String(f.get("art", ""))
+		var unlocked := ConfigLoader.form_unlocked(f)
+		var label := tr(String(f.get("name", "")))
+		if not unlocked:
+			var hint := _lock_hint(String(f.get("unlock", "")))
+			if not hint.is_empty():
+				label += "  " + hint
+		var btn := UIKit.button(label, art == current)
+		btn.disabled = not unlocked
+		btn.add_theme_font_size_override("font_size", Palette.F_SMALL)
+		if unlocked:
+			btn.pressed.connect(_open_preview.bind(art, subtitle, title, String(f.get("note", body)), story_id, forms))
+		row.add_child(btn)
+	return row
+
+
+func _close_preview() -> void:
+	if _preview != null and is_instance_valid(_preview):
+		_preview.queue_free()
+	_preview = null
+
+
+## 结局页里那个「再看一遍这段」：关掉预览、把剧情盖上来重播。
+## 这里走的是独立的 StoryOverlay 实例，不碰 Gallery 的排队状态 ——
+## 回看是回看，不该被记成「还没播过」，更不该把已看过的剧情塞回队列。
+func _replay_story(story_id: String) -> void:
+	var story: Variant = _stories.get(story_id, null)
+	if not (story is Dictionary):
+		return
+	_close_preview()
+	if _story == null or not is_instance_valid(_story):
+		_story = StoryOverlay.new()
+		add_child(_story)
+	_story.play(story as Dictionary)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _preview == null:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		_close_preview()
+		get_viewport().set_input_as_handled()
+
+
+## 把 unlock 规则翻成人话。
+func _lock_hint(rule: String) -> String:
+	if rule.begins_with("affinity:"):
+		return tr("ui.form.affinity") % rule.split(":")[1]
+	if rule.begins_with("item:"):
+		return tr("ui.form.need_item")
+	if rule.begins_with("cleared:"):
+		return tr("ui.form.need_clear")
+	return ""

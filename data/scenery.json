@@ -1,0 +1,42 @@
+{
+  "_doc": "大洋彼岸的景色：钩子穿过地心之后才钩得到的东西。优先出没收集过的，收齐后再回落到随机。",
+  "collection": "scene.collection",
+  "items": [
+    {
+      "id": "seattle_skyline",
+      "name": "西雅图海景",
+      "art": "res://assets/art/cg/ch2/scenery/seattle_skyline.webp",
+      "weight": 25,
+      "unlock": "deep:1200",
+      "postcard": false,
+      "note": "黄昏的湾，帆船排成一列。对岸的城市亮得很安静。"
+    },
+    {
+      "id": "statue",
+      "name": "倒瓦运动",
+      "art": "res://assets/art/cg/ch2/seattle_statue.webp",
+      "weight": 25,
+      "unlock": "deep:1200",
+      "postcard": false,
+      "note": "一尊金色的像横倒在基座上，头朝下。有人把它推倒了，没人去扶。"
+    },
+    {
+      "id": "protest",
+      "name": "反 AI 大旗",
+      "art": "res://assets/art/cg/ch2/seattle_protest.webp",
+      "weight": 25,
+      "unlock": "deep:1200",
+      "postcard": false,
+      "note": "雨里的黑色背影，一只手把旗举过肩。看不清脸，也不需要看清。"
+    },
+    {
+      "id": "la_bridge",
+      "name": "洛杉矶大桥",
+      "art": "res://assets/art/cg/ch2/scenery/la_bridge.webp",
+      "weight": 25,
+      "unlock": "deep:1200",
+      "postcard": false,
+      "note": "桥很长，一直伸到海里去。棕榈树的影子落在公路上。"
+    }
+  ]
+}

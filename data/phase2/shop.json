@@ -1,0 +1,115 @@
+{
+  "_note": "二期商店。升级只用钱，三项各 4 级（0 级=初始）。没有氧气，深度靠线，数量靠钩。",
+  "upgrades": {
+    "line": {
+      "label": "鱼线",
+      "levels": [
+        0,
+        55,
+        140,
+        300,
+        560
+      ],
+      "max_depth": [
+        300,
+        600,
+        1000,
+        1300,
+        1300
+      ],
+      "note": "线长 = 能下到多深。3 级摸到 1300m，4 级才够稳（1300m 不抖）"
+    },
+    "hook": {
+      "label": "鱼钩",
+      "levels": [
+        0,
+        60,
+        150,
+        320,
+        600
+      ],
+      "capacity": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "note": "钩容量 = 一竿能带上来几条（鱼/杂物/AI 都算一条）"
+    },
+    "rod": {
+      "label": "钓竿",
+      "levels": [
+        0,
+        50,
+        130,
+        280,
+        520
+      ],
+      "sink_scale": [
+        1.0,
+        0.92,
+        0.84,
+        0.76,
+        0.68
+      ],
+      "note": "只改下坠与收线速度，不影响深度与容量"
+    }
+  },
+  "items": [
+    {
+      "id": "sonar",
+      "label": "AI 娘声纳",
+      "price": 120,
+      "consumable": false,
+      "note": "显示本局 AI 位置"
+    },
+    {
+      "id": "fast_fall",
+      "label": "快速下坠",
+      "price": 150,
+      "consumable": false,
+      "note": "下坠速度 +40%"
+    },
+    {
+      "id": "double_hook",
+      "label": "双钩",
+      "price": 180,
+      "consumable": true,
+      "note": "本局钩容量 +1"
+    },
+    {
+      "id": "line_guard",
+      "label": "鱼线加固",
+      "price": 200,
+      "consumable": false,
+      "note": "断线不再清空进度"
+    },
+    {
+      "id": "magnet",
+      "label": "磁铁",
+      "price": 130,
+      "consumable": false,
+      "note": "吸附附近杂物"
+    },
+    {
+      "id": "seed_slot",
+      "label": "种子扩容",
+      "price": 160,
+      "consumable": false,
+      "note": "历史种子上限 +6（不占槽）"
+    },
+    {
+      "id": "lamp",
+      "label": "头灯",
+      "price": 200,
+      "consumable": false,
+      "note": "600m 以下开灯：视野 160->420px，刷怪率 x1.3"
+    }
+  ],
+  "slots_from_upgrades": "min(hook, line, rod)",
+  "reachable": {
+    "start_depth": 300,
+    "full_depth": 1300
+  }
+}

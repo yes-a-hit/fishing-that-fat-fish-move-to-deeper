@@ -1,0 +1,45 @@
+{
+  "_doc": "固定场景里的彩蛋收藏品。点中即记进 progress.trinkets，集齐开结局分支。scene 取 harbor/shore/boat；spot 与 size 都是相对坐标 0~1。",
+  "items": [
+    {
+      "id": "gpt_receipt",
+      "name": "一张收据",
+      "scene": "harbor",
+      "spot": [0.905, 0.735],
+      "size": [0.05, 0.055],
+      "hint": "压在秤下面",
+      "note": "写着「白饭 3 碗，赊」。落款是一个画歪的圆圈。",
+      "line": "affinity:abagpt"
+    },
+    {
+      "id": "gpt_chalk",
+      "name": "半截粉笔",
+      "scene": "harbor",
+      "spot": [0.135, 0.905],
+      "size": [0.045, 0.05],
+      "hint": "木桩根那儿有白的",
+      "note": "记账用的，已经写不出字了。",
+      "line": "affinity:abagpt"
+    },
+    {
+      "id": "gpt_tank",
+      "name": "空的鱼缸",
+      "scene": "harbor",
+      "spot": [0.735, 0.545],
+      "size": [0.06, 0.07],
+      "hint": "窗台上",
+      "note": "里面本来有条鱼。水痕还在。",
+      "line": "affinity:abagpt"
+    },
+    {
+      "id": "gpt_coin",
+      "name": "一枚硬币",
+      "scene": "boat",
+      "spot": [0.62, 0.88],
+      "size": [0.05, 0.05],
+      "hint": "甲板缝里有个圆的",
+      "note": "磨得看不见年份，只摸得出正反面。",
+      "line": "affinity:abagpt"
+    }
+  ]
+}

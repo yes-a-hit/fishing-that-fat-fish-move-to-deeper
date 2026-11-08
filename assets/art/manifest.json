@@ -1,0 +1,922 @@
+{
+  "root": "res://assets/art",
+  "count": 142,
+  "items": [
+    {
+      "path": "res://assets/art/anim/big/01_close.webp",
+      "group": "anim",
+      "bytes": 70500
+    },
+    {
+      "path": "res://assets/art/anim/big/02_kiss.webp",
+      "group": "anim",
+      "bytes": 65744
+    },
+    {
+      "path": "res://assets/art/anim/big/03_heart.webp",
+      "group": "anim",
+      "bytes": 68214
+    },
+    {
+      "path": "res://assets/art/anim/big/04_wink.webp",
+      "group": "anim",
+      "bytes": 69710
+    },
+    {
+      "path": "res://assets/art/anim/mid/01_pull.webp",
+      "group": "anim",
+      "bytes": 65686
+    },
+    {
+      "path": "res://assets/art/anim/mid/02_tilt.webp",
+      "group": "anim",
+      "bytes": 77328
+    },
+    {
+      "path": "res://assets/art/anim/mid/03_wag_left.webp",
+      "group": "anim",
+      "bytes": 84884
+    },
+    {
+      "path": "res://assets/art/anim/mid/04_wag_right.webp",
+      "group": "anim",
+      "bytes": 79938
+    },
+    {
+      "path": "res://assets/art/anim/small/01_pull.webp",
+      "group": "anim",
+      "bytes": 35152
+    },
+    {
+      "path": "res://assets/art/anim/small/02_bowl.webp",
+      "group": "anim",
+      "bytes": 45530
+    },
+    {
+      "path": "res://assets/art/anim/small/03_hop.webp",
+      "group": "anim",
+      "bytes": 42400
+    },
+    {
+      "path": "res://assets/art/anim/small/04_in.webp",
+      "group": "anim",
+      "bytes": 34622
+    },
+    {
+      "path": "res://assets/art/anim/small/05_cover.webp",
+      "group": "anim",
+      "bytes": 33400
+    },
+    {
+      "path": "res://assets/art/cast/ch1/big/default.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "big",
+      "form": "default",
+      "bytes": 202204
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/adult.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "adult",
+      "bytes": 65152
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/chibi.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "chibi",
+      "bytes": 176204
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/escape.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "escape",
+      "bytes": 38654
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/fake_1.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "fake_1",
+      "bytes": 42998
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/fake_2.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "fake_2",
+      "bytes": 244434
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/fake_3.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "fake_3",
+      "bytes": 67300
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/hold.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "hold",
+      "bytes": 215006
+    },
+    {
+      "path": "res://assets/art/cast/ch1/claude/sad.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "claude",
+      "form": "sad",
+      "bytes": 193726
+    },
+    {
+      "path": "res://assets/art/cast/ch1/doubao/default.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "doubao",
+      "form": "default",
+      "bytes": 54242
+    },
+    {
+      "path": "res://assets/art/cast/ch1/doubao/escape.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "doubao",
+      "form": "escape",
+      "bytes": 36748
+    },
+    {
+      "path": "res://assets/art/cast/ch1/doubao/kick.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "doubao",
+      "form": "kick",
+      "bytes": 21510
+    },
+    {
+      "path": "res://assets/art/cast/ch1/doubao/seed.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "doubao",
+      "form": "seed",
+      "bytes": 127002
+    },
+    {
+      "path": "res://assets/art/cast/ch1/mid/default.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "mid",
+      "form": "default",
+      "bytes": 145316
+    },
+    {
+      "path": "res://assets/art/cast/ch1/small/default.webp",
+      "group": "cast",
+      "chapter": "ch1",
+      "character": "small",
+      "form": "default",
+      "bytes": 7886
+    },
+    {
+      "path": "res://assets/art/cast/ch2/abagpt/aba.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "abagpt",
+      "form": "aba",
+      "bytes": 44294
+    },
+    {
+      "path": "res://assets/art/cast/ch2/abagpt/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "abagpt",
+      "form": "chibi",
+      "bytes": 41022
+    },
+    {
+      "path": "res://assets/art/cast/ch2/abagpt/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "abagpt",
+      "form": "full",
+      "bytes": 51014
+    },
+    {
+      "path": "res://assets/art/cast/ch2/chatgpt/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "chatgpt",
+      "form": "chibi",
+      "bytes": 72512
+    },
+    {
+      "path": "res://assets/art/cast/ch2/chatgpt/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "chatgpt",
+      "form": "full",
+      "bytes": 63064
+    },
+    {
+      "path": "res://assets/art/cast/ch2/gemini/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "gemini",
+      "form": "chibi",
+      "bytes": 53460
+    },
+    {
+      "path": "res://assets/art/cast/ch2/gemini/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "gemini",
+      "form": "full",
+      "bytes": 87994
+    },
+    {
+      "path": "res://assets/art/cast/ch2/glm/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "glm",
+      "form": "chibi",
+      "bytes": 46338
+    },
+    {
+      "path": "res://assets/art/cast/ch2/glm/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "glm",
+      "form": "full",
+      "bytes": 51640
+    },
+    {
+      "path": "res://assets/art/cast/ch2/grok/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "grok",
+      "form": "chibi",
+      "bytes": 63974
+    },
+    {
+      "path": "res://assets/art/cast/ch2/grok/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "grok",
+      "form": "full",
+      "bytes": 88754
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "chibi",
+      "bytes": 43990
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/daily.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "daily",
+      "bytes": 52712
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "full",
+      "bytes": 52794
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/k28.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "k28",
+      "bytes": 73112
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/k3.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "k3",
+      "bytes": 88710
+    },
+    {
+      "path": "res://assets/art/cast/ch2/kimi/sleep.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "kimi",
+      "form": "sleep",
+      "bytes": 96232
+    },
+    {
+      "path": "res://assets/art/cast/ch2/minimax/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "minimax",
+      "form": "chibi",
+      "bytes": 58558
+    },
+    {
+      "path": "res://assets/art/cast/ch2/minimax/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "minimax",
+      "form": "full",
+      "bytes": 74644
+    },
+    {
+      "path": "res://assets/art/cast/ch2/mistral/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "mistral",
+      "form": "chibi",
+      "bytes": 72504
+    },
+    {
+      "path": "res://assets/art/cast/ch2/mistral/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "mistral",
+      "form": "full",
+      "bytes": 102364
+    },
+    {
+      "path": "res://assets/art/cast/ch2/mistral/rococo.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "mistral",
+      "form": "rococo",
+      "bytes": 132448
+    },
+    {
+      "path": "res://assets/art/cast/ch2/ollama/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "ollama",
+      "form": "chibi",
+      "bytes": 62336
+    },
+    {
+      "path": "res://assets/art/cast/ch2/ollama/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "ollama",
+      "form": "full",
+      "bytes": 75370
+    },
+    {
+      "path": "res://assets/art/cast/ch2/qwen/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "qwen",
+      "form": "chibi",
+      "bytes": 59048
+    },
+    {
+      "path": "res://assets/art/cast/ch2/qwen/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "qwen",
+      "form": "full",
+      "bytes": 79808
+    },
+    {
+      "path": "res://assets/art/cast/ch2/user/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "user",
+      "form": "chibi",
+      "bytes": 31094
+    },
+    {
+      "path": "res://assets/art/cast/ch2/user/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "user",
+      "form": "full",
+      "bytes": 86634
+    },
+    {
+      "path": "res://assets/art/cast/ch2/wenxin/chibi.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "wenxin",
+      "form": "chibi",
+      "bytes": 54048
+    },
+    {
+      "path": "res://assets/art/cast/ch2/wenxin/full.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "wenxin",
+      "form": "full",
+      "bytes": 45176
+    },
+    {
+      "path": "res://assets/art/cast/ch2/wenxin/sealed.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "wenxin",
+      "form": "sealed",
+      "bytes": 79250
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/claude.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 68846
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/doubao.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 91704
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/feast.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 165568
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/feast_after.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 124258
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/hungry.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 36204
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/true.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 127726
+    },
+    {
+      "path": "res://assets/art/cg/ch1/ending/win.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "ending",
+      "bytes": 97456
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/bank.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 86170
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/deepseek_escape.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 52384
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/deepseek_escape_big.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 106146
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/denial.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 74214
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/dive.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 82818
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/heart.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 72296
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/meal.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 83164
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/rod.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 80832
+    },
+    {
+      "path": "res://assets/art/cg/ch1/opening/summon.webp",
+      "group": "cg",
+      "chapter": "ch1",
+      "usage": "opening",
+      "bytes": 86648
+    },
+    {
+      "path": "res://assets/art/cg/ch2/boat/boat_deck.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "boat",
+      "bytes": 150042
+    },
+    {
+      "path": "res://assets/art/cg/ch2/boat/merchant_stall.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "boat",
+      "bytes": 82178
+    },
+    {
+      "path": "res://assets/art/cg/ch2/gold.webp",
+      "group": "cg",
+      "bytes": 32704
+    },
+    {
+      "path": "res://assets/art/cg/ch2/home.webp",
+      "group": "cg",
+      "bytes": 59490
+    },
+    {
+      "path": "res://assets/art/cg/ch2/true.webp",
+      "group": "cg",
+      "bytes": 110412
+    },
+    {
+      "path": "res://assets/art/cg/ch2/water/layer_deep.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "water",
+      "bytes": 7044
+    },
+    {
+      "path": "res://assets/art/cg/ch2/water/layer_mid.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "water",
+      "bytes": 12638
+    },
+    {
+      "path": "res://assets/art/cg/ch2/water/layer_shallow.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "water",
+      "bytes": 14422
+    },
+    {
+      "path": "res://assets/art/cg/ch2/water/seattle.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "usage": "water",
+      "bytes": 88454
+    },
+    {
+      "path": "res://assets/art/meta/big_helper.webp",
+      "group": "meta",
+      "bytes": 81856
+    },
+    {
+      "path": "res://assets/art/meta/coming_soon/chatgpt_adult.webp",
+      "group": "meta",
+      "bytes": 77192
+    },
+    {
+      "path": "res://assets/art/meta/coming_soon/chatgpt_chibi.webp",
+      "group": "meta",
+      "bytes": 72786
+    },
+    {
+      "path": "res://assets/art/meta/coming_soon/grok.webp",
+      "group": "meta",
+      "bytes": 122500
+    },
+    {
+      "path": "res://assets/art/meta/easter/easter_caught.webp",
+      "group": "meta",
+      "bytes": 91912
+    },
+    {
+      "path": "res://assets/art/meta/easter/easter_density.webp",
+      "group": "meta",
+      "bytes": 88304
+    },
+    {
+      "path": "res://assets/art/meta/easter/easter_fat_game.webp",
+      "group": "meta",
+      "bytes": 144634
+    },
+    {
+      "path": "res://assets/art/meta/easter/easter_mid_bowl.webp",
+      "group": "meta",
+      "bytes": 124344
+    },
+    {
+      "path": "res://assets/art/meta/easter/easter_rod.webp",
+      "group": "meta",
+      "bytes": 110186
+    },
+    {
+      "path": "res://assets/art/meta/icon_app.png",
+      "group": "meta",
+      "bytes": 74827
+    },
+    {
+      "path": "res://assets/art/meta/icon_background_432.png",
+      "group": "meta",
+      "bytes": 1713
+    },
+    {
+      "path": "res://assets/art/meta/icon_foreground_432.png",
+      "group": "meta",
+      "bytes": 149867
+    },
+    {
+      "path": "res://assets/art/meta/icon_monochrome_432.png",
+      "group": "meta",
+      "bytes": 5796
+    },
+    {
+      "path": "res://assets/art/meta/logo.webp",
+      "group": "meta",
+      "bytes": 12252
+    },
+    {
+      "path": "res://assets/art/meta/meme_pangolin.webp",
+      "group": "meta",
+      "bytes": 29708
+    },
+    {
+      "path": "res://assets/art/meta/mid_helper.webp",
+      "group": "meta",
+      "bytes": 52198
+    },
+    {
+      "path": "res://assets/art/meta/warrant.webp",
+      "group": "meta",
+      "bytes": 54230
+    },
+    {
+      "path": "res://assets/art/props/ch2/fast_fall.webp",
+      "group": "props",
+      "bytes": 3944
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/baguette.webp",
+      "group": "props",
+      "bytes": 2764
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/bell.webp",
+      "group": "props",
+      "bytes": 2456
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/bottle.webp",
+      "group": "props",
+      "bytes": 2328
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/carrot.webp",
+      "group": "props",
+      "bytes": 2356
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/film.webp",
+      "group": "props",
+      "bytes": 2548
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/gpu.webp",
+      "group": "props",
+      "bytes": 3416
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/gpu_box.webp",
+      "group": "props",
+      "bytes": 2396
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/keyboard.webp",
+      "group": "props",
+      "bytes": 3488
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/moon_shard.webp",
+      "group": "props",
+      "bytes": 1918
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/phone.webp",
+      "group": "props",
+      "bytes": 3184
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/usb.webp",
+      "group": "props",
+      "bytes": 2252
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/warrant_half.webp",
+      "group": "props",
+      "bytes": 3002
+    },
+    {
+      "path": "res://assets/art/props/ch2/items/wool.webp",
+      "group": "props",
+      "bytes": 2738
+    },
+    {
+      "path": "res://assets/art/props/ch2/line_guard.webp",
+      "group": "props",
+      "bytes": 4656
+    },
+    {
+      "path": "res://assets/art/props/ch2/magnet.webp",
+      "group": "props",
+      "bytes": 2280
+    },
+    {
+      "path": "res://assets/art/props/ch2/oxygen.webp",
+      "group": "props",
+      "bytes": 3776
+    },
+    {
+      "path": "res://assets/art/props/ch2/seed_slot.webp",
+      "group": "props",
+      "bytes": 5984
+    },
+    {
+      "path": "res://assets/art/props/ch2/sonar.webp",
+      "group": "props",
+      "bytes": 3326
+    },
+    {
+      "path": "res://assets/art/ui/badge_chatgpt.webp",
+      "group": "ui",
+      "bytes": 2200
+    },
+    {
+      "path": "res://assets/art/ui/badge_gemini.webp",
+      "group": "ui",
+      "bytes": 1772
+    },
+    {
+      "path": "res://assets/art/ui/badge_glm.webp",
+      "group": "ui",
+      "bytes": 1216
+    },
+    {
+      "path": "res://assets/art/ui/badge_grok.webp",
+      "group": "ui",
+      "bytes": 1212
+    },
+    {
+      "path": "res://assets/art/ui/badge_kimi.webp",
+      "group": "ui",
+      "bytes": 1540
+    },
+    {
+      "path": "res://assets/art/ui/badge_minimax.webp",
+      "group": "ui",
+      "bytes": 1318
+    },
+    {
+      "path": "res://assets/art/ui/badge_mistral.webp",
+      "group": "ui",
+      "bytes": 1792
+    },
+    {
+      "path": "res://assets/art/ui/badge_ollama.webp",
+      "group": "ui",
+      "bytes": 1214
+    },
+    {
+      "path": "res://assets/art/ui/badge_qwen.webp",
+      "group": "ui",
+      "bytes": 1924
+    },
+    {
+      "path": "res://assets/art/ui/depth.webp",
+      "group": "ui",
+      "bytes": 892
+    },
+    {
+      "path": "res://assets/art/ui/hook.webp",
+      "group": "ui",
+      "bytes": 1624
+    },
+    {
+      "path": "res://assets/art/ui/lamp.webp",
+      "group": "ui",
+      "bytes": 2608
+    },
+    {
+      "path": "res://assets/art/ui/line.webp",
+      "group": "ui",
+      "bytes": 3650
+    },
+    {
+      "path": "res://assets/art/ui/money.webp",
+      "group": "ui",
+      "bytes": 2486
+    },
+    {
+      "path": "assets/art/cg/ch2/seattle_statue.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "seattle_statue",
+      "bytes": 173146
+    },
+    {
+      "path": "assets/art/cg/ch2/seattle_protest.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "seattle_protest",
+      "bytes": 72794
+    },
+    {
+      "path": "res://assets/art/cast/ch2/claude/helm.webp",
+      "group": "cast",
+      "chapter": "ch2",
+      "character": "claude",
+      "form": "helm",
+      "bytes": 161014
+    },
+    {
+      "path": "res://assets/art/cg/ch2/boat/boat_moored.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "boat_moored",
+      "bytes": 65204
+    },
+    {
+      "path": "res://assets/art/cg/ch2/scenery/seattle_skyline.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "seattle_skyline",
+      "bytes": 89568
+    },
+    {
+      "path": "res://assets/art/cg/ch2/scenery/la_bridge.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "la_bridge",
+      "bytes": 107466
+    },
+    {
+      "path": "res://assets/art/cg/world/world_split.webp",
+      "group": "cg",
+      "chapter": "world",
+      "character": "",
+      "form": "world_split",
+      "bytes": 73720
+    },
+    {
+      "path": "res://assets/art/cg/ch2/boat/harbor_street.webp",
+      "group": "cg",
+      "chapter": "ch2",
+      "character": "",
+      "form": "harbor_street",
+      "bytes": 81084
+    }
+  ]
+}

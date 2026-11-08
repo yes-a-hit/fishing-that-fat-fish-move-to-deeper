@@ -1,0 +1,360 @@
+class_name ConfigLoader
+extends RefCounted
+
+## 所有 data/*.json 的唯一入口。
+##
+## 规则：
+##   1. 读不到文件 → push_error + 返回空，不崩。
+##   2. 字段缺失 → 由各模型自己的 from_dict 回填默认值。
+##   3. 结构错误（顶层不是对象、fish 不是数组）→ 报错 + 用内置兜底数据。
+##
+## 除了这个文件和测试，别的地方不应该出现 FileAccess / JSON。
+
+const PATH_FISH := "res://data/fish.json"
+const PATH_TUNING := "res://data/tuning.json"
+const PATH_ENDINGS := "res://data/endings.json"
+const PATH_STORY := "res://data/story.json"
+const PATH_CHARACTERS := "res://data/characters.json"
+const PATH_ESCAPES := "res://data/escapes.json"
+const PATH_ABOUT := "res://data/about.json"
+const PATH_CAST_FORMS := "res://data/phase2/cast_forms.json"
+const PATH_SCENERY := "res://data/scenery.json"
+const PATH_AFFINITY := "res://data/phase2/affinity.json"
+
+## 连 fish.json 都读不到时的兜底，保证游戏还能跑起来。
+const FALLBACK_FISH := [
+	{"id": "small", "name": "小肥鱼", "stamina": 100.0, "damage_ratio": 0.25,
+	 "tension_rate": 0.85},
+	{"id": "mid", "name": "中肥鱼", "stamina": 140.0, "damage_ratio": 0.20,
+	 "tension_rate": 1.0},
+	{"id": "big", "name": "大肥鱼", "stamina": 190.0, "damage_ratio": 0.20,
+	 "tension_rate": 1.0},
+]
+
+
+static func read_json(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		push_error("[config] 文件不存在: " + path)
+		return {}
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_error("[config] 无法打开: " + path)
+		return {}
+	var text := file.get_as_text()
+	file.close()
+
+	var json := JSON.new()
+	if json.parse(text) != OK:
+		push_error("[config] JSON 解析失败 %s 第 %d 行: %s" % [
+			path, json.get_error_line(), json.get_error_message()
+		])
+		return {}
+	if not (json.data is Dictionary):
+		push_error("[config] 顶层必须是对象: " + path)
+		return {}
+	return json.data as Dictionary
+
+
+## 读 fish.json，返回 Array[FishSpec]。保证至少有一条鱼。
+static func load_fish(path: String = PATH_FISH) -> Array:
+	var data := read_json(path)
+	var raw: Variant = data.get("fish", null)
+	var out: Array = []
+
+	if raw is Array and not (raw as Array).is_empty():
+		for i in (raw as Array).size():
+			var item: Variant = (raw as Array)[i]
+			if not (item is Dictionary):
+				push_warning("[config] fish[%d] 不是对象，已跳过" % i)
+				continue
+			out.append(FishSpec.from_dict(item as Dictionary, "fish_%d" % i))
+	else:
+		push_error("[config] fish.json 缺少 fish 数组，使用内置兜底数据")
+		for item in FALLBACK_FISH:
+			out.append(FishSpec.from_dict(item, "fallback"))
+
+	if out.is_empty():
+		push_error("[config] 没有任何可用鱼数据，使用内置兜底数据")
+		for item in FALLBACK_FISH:
+			out.append(FishSpec.from_dict(item, "fallback"))
+
+	# 鱼名走翻译表。规格里的 tagline / blurb 也一并处理。
+	for spec in out:
+		var s: FishSpec = spec
+		s.display_name = TranslationServer.translate(s.display_name)
+		s.tagline = TranslationServer.translate(s.tagline)
+		s.blurb = TranslationServer.translate(s.blurb)
+	return out
+
+
+static func load_tuning(path: String = PATH_TUNING) -> GameTuning:
+	return GameTuning.from_dict(read_json(path))
+
+
+## 数据层的文案（鱼名、结局标题）也走翻译表。
+## 用 TranslationServer.translate() 而不是 tr()，因为这是 static 函数。
+## 语种在读完就固化了 —— 切语言后回菜单再进游戏会重新加载，够用。
+static func _loc(v: Variant) -> Variant:
+	if v is String:
+		return TranslationServer.translate(v as String)
+	if v is Array:
+		var arr: Array = []
+		for item in (v as Array):
+			arr.append(_loc(item))
+		return arr
+	return v
+
+
+static func load_endings(path: String = PATH_ENDINGS) -> Dictionary:
+	var data := read_json(path)
+	if data.is_empty():
+		push_error("[config] endings.json 为空，结算页将没有文案")
+		return data
+	# 只翻展示字段，不碰 reward / pages 里的资源路径
+	for key in data.keys():
+		var entry: Variant = data[key]
+		if not (entry is Dictionary):
+			continue
+		var d: Dictionary = entry
+		for field in ["title", "subtitle", "lines", "caption"]:
+			if d.has(field):
+				d[field] = _loc(d[field])
+		if d.has("pages") and d["pages"] is Array:
+			for page in (d["pages"] as Array):
+				if page is Dictionary:
+					var pg: Dictionary = page
+					for pf in ["caption", "text", "who"]:
+						if pg.has(pf):
+							pg[pf] = _loc(pg[pf])
+	return data
+
+
+## 剧情片段。pages 里的 who / text 是玩家看得见的字，也得走翻译表 ——
+## StoryOverlay 直接往 Label 上写字符串，不会自己 tr()，所以翻译必须在读的时候做。
+static func load_story(path: String = PATH_STORY) -> Dictionary:
+	var data := read_json(path)
+	for key in data.keys():
+		var entry: Variant = data[key]
+		if not (entry is Dictionary):
+			continue
+		var d: Dictionary = entry
+		var pages: Variant = d.get("pages", null)
+		if not (pages is Array):
+			continue
+		for page in (pages as Array):
+			if not (page is Dictionary):
+				continue
+			var pg: Dictionary = page
+			for field in ["who", "text"]:
+				if pg.has(field):
+					pg[field] = _loc(pg[field])
+	return data
+
+
+## 一次性把配置读齐。game_root 只调这个。
+static func load_all() -> Dictionary:
+	return {
+		"fish": load_fish(),
+		"tuning": load_tuning(),
+		"endings": load_endings(),
+		"story": load_story(),
+	}
+
+
+## 图鉴「角色」页用。只取 characters 数组，翻展示字段。
+static func load_characters(path: String = PATH_CHARACTERS) -> Array:
+	var data := read_json(path)
+	var raw: Variant = data.get("characters", [])
+	if not (raw is Array):
+		return []
+	var out: Array = []
+	for item in (raw as Array):
+		if not (item is Dictionary):
+			continue
+		var c: Dictionary = item
+		for field in ["name", "personality", "quote"]:
+			if c.has(field):
+				c[field] = _loc(c[field])
+		out.append(c)
+	return out
+
+
+## 多形态立绘表（二期）。同一角色可以有好几套立绘 / 差分：
+## 日常、换色、满配、只给玩家看的私服 —— 图鉴详情页按这张表出形态条。
+## 返回 { 角色 id: { name, default, forms: [...] } }，表单里的 note 已翻好。
+static func load_cast_forms(path: String = PATH_CAST_FORMS) -> Dictionary:
+	var data := read_json(path)
+	data.erase("_doc")
+	var out: Dictionary = {}
+	for id in data.keys():
+		var item: Variant = data[id]
+		if not (item is Dictionary):
+			continue
+		var entry: Dictionary = item
+		if entry.has("name"):
+			entry["name"] = _loc(entry["name"])
+		var forms: Array = []
+		for f in (entry.get("forms", []) as Array):
+			if not (f is Dictionary):
+				continue
+			var form: Dictionary = f
+			for field in ["name", "note"]:
+				if form.has(field):
+					form[field] = _loc(form[field])
+			forms.append(form)
+		entry["forms"] = forms
+		out[String(id)] = entry
+	return out
+
+
+## 形态解锁判据：always / affinity:N / item:ID / cleared:CH。
+## 判不了的（比如还没接二期存档）一律当解锁，别把立绘藏没。
+static func form_unlocked(form: Dictionary, progress: Variant = null) -> bool:
+	var rule := String(form.get("unlock", "always"))
+	if rule == "" or rule == "always":
+		return true
+	var parts := rule.split(":", true, 1)
+	if parts.size() < 2:
+		return true
+	var kind := parts[0]
+	var arg := parts[1]
+	var owner_id := String(form.get("owner", "kimi"))
+	match kind:
+		"affinity":
+			var have := 0
+			if progress != null and progress.has_method("affinity_of"):
+				have = int(progress.call("affinity_of", owner_id))
+			else:
+				have = _phase2_affinity(owner_id)
+			return have >= int(arg)
+		"item":
+			if progress != null and progress.has_method("item_count"):
+				return int(progress.call("item_count", arg)) > 0
+			return _phase2_item_count(arg) > 0
+		"cleared":
+			if progress != null and progress.has_method("chapter_cleared"):
+				return bool(progress.call("chapter_cleared", arg))
+			return _phase2_chapter_cleared(arg)
+	return true
+
+
+## 图鉴没有二期存档对象时，退一步直接读 user://phase2.json。
+## 读不到就当 0 —— 没出海过的人不该看见私服。
+static func _read_phase2() -> Dictionary:
+	if not FileAccess.file_exists("user://phase2.json"):
+		return {}
+	var f := FileAccess.open("user://phase2.json", FileAccess.READ)
+	if f == null:
+		return {}
+	var text := f.get_as_text()
+	f.close()
+	var data: Variant = JSON.parse_string(text)
+	return data if data is Dictionary else {}
+
+
+## 二期：这个角色在第二关被钓到过几次（图鉴用它决定露不露面）。
+static func phase2_character_caught(id: String) -> bool:
+	var chars: Variant = _read_phase2().get("characters", {})
+	if chars is Dictionary:
+		return int((chars as Dictionary).get(id, 0)) > 0
+	return false
+
+
+static func _phase2_affinity(id: String) -> int:
+	var aff: Variant = _read_phase2().get("affinity", {})
+	if aff is Dictionary:
+		return int((aff as Dictionary).get(id, 0))
+	return 0
+
+
+static func _phase2_item_count(id: String) -> int:
+	var items: Variant = _read_phase2().get("items", {})
+	if items is Dictionary:
+		return int((items as Dictionary).get(id, 0))
+	return 0
+
+
+static func _phase2_chapter_cleared(id: String) -> bool:
+	var chapters: Variant = _read_phase2().get("chapter", {})
+	if chapters is Dictionary:
+		var entry: Variant = (chapters as Dictionary).get(id, {})
+		if entry is Dictionary:
+			return bool((entry as Dictionary).get("cleared", false))
+	return false
+
+
+## 西雅图景色（大洋彼岸的景色）。文案走 key，与剧情同一套 _loc。
+static func load_scenery(path: String = PATH_SCENERY) -> Dictionary:
+	var data := read_json(path)
+	if data.is_empty():
+		return {"collection": "", "items": []}
+	var out := {"collection": _loc(data.get("collection", "")), "items": []}
+	var raw: Variant = data.get("items", [])
+	if raw is Array:
+		for it in (raw as Array):
+			if not (it is Dictionary):
+				continue
+			var d: Dictionary = (it as Dictionary).duplicate()
+			d["name"] = _loc(d.get("name", ""))
+			d["note"] = _loc(d.get("note", ""))
+			(out["items"] as Array).append(d)
+	return out
+
+
+## 这张景色有没有被抽到过。
+static func scenery_seen(id: String) -> bool:
+	var seen: Variant = _read_phase2().get("scenery", [])
+	if seen is Array:
+		return (seen as Array).has(id)
+	return false
+
+
+## 脱钩演出表。图鉴格子与脱钩卡片共用这一份 —— 之前同一批图和字在图鉴与
+## game_root 各写了一遍，改文案要改两个文件，改漏就成了「图鉴里她没跑」。
+static func load_escapes(path: String = PATH_ESCAPES) -> Array:
+	var data := read_json(path)
+	var raw: Variant = data.get("items", [])
+	if not (raw is Array):
+		push_error("[config] escapes.json 缺少 items 数组")
+		return []
+	var out: Array = []
+	for item in (raw as Array):
+		if not (item is Dictionary):
+			continue
+		var e: Dictionary = item
+		for field in ["title", "line", "sub"]:
+			if e.has(field):
+				e[field] = _loc(e[field])
+		out.append(e)
+	return out
+
+
+## 按鱼 id 找脱钩演出。没配返回空字典 —— 调用方退回纯文字提示，不崩。
+static func escape_for(items: Array, fish_id: String) -> Dictionary:
+	for it in items:
+		if not (it is Dictionary):
+			continue
+		var d: Dictionary = it
+		if fish_id in Array(d.get("fish", [])):
+			return d
+	return {}
+
+
+## 好感度分档表（min 升序）。
+static func load_affinity(path: String = PATH_AFFINITY) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		return {}
+	var raw = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if raw is not Dictionary:
+		return {}
+	return raw
+
+
+## 取某角色当前生效的 buff（多档叠加取最高那档，不累计）。
+static func affinity_buff(table: Dictionary, value: int) -> Dictionary:
+	var tiers = table.get("tiers", [])
+	var best: Dictionary = {}
+	for t in tiers:
+		if value >= int(t.get("min", 0)):
+			best = t.get("buff", {})
+	return best

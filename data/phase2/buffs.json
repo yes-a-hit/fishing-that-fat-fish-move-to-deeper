@@ -1,0 +1,433 @@
+{
+  "_doc": "每个 AI 娘各自的好感 buff。门槛沿用 affinity.json 的四档（0/30/60/90），这里只写「这一档给她什么」。buff 键：sell_bonus 卖价加成 / bait_bonus 多带白饭 / rare_bonus 稀有鱼概率 / sink_speed 下坠更快 / hook_window 上钩判定更宽 / junk_guard 撞杂物减伤 / deep_bonus 深水加分 / score_bonus 分数加成。",
+  "tiers": [
+    0,
+    30,
+    60,
+    90
+  ],
+  "characters": {
+    "chatgpt": {
+      "name": "商人",
+      "note": "她是唯一收鱼的人，卖价全看她。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "sell_bonus": 0.1
+          },
+          "note": "算你熟客"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "sell_bonus": 0.2
+          },
+          "note": "秤给你调过了"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "sell_bonus": 0.35
+          },
+          "note": "别人一斤的钱，给你三斤"
+        }
+      ]
+    },
+    "big": {
+      "name": "大肥鱼",
+      "note": "她最会精挑细选，好鱼不放过。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "score_bonus": 0.05
+          },
+          "note": "夸你手稳"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "score_bonus": 0.1,
+            "rare_bonus": 0.03
+          },
+          "note": "帮你盯着水面"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "score_bonus": 0.15,
+            "rare_bonus": 0.05
+          },
+          "note": "她说这一竿我看好"
+        }
+      ]
+    },
+    "mid": {
+      "name": "中肥鱼",
+      "note": "她安静，但眼睛尖。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "rare_bonus": 0.03
+          },
+          "note": "悄悄指了个方向"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "rare_bonus": 0.06
+          },
+          "note": "她记得鱼群什么时候来"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "rare_bonus": 0.1
+          },
+          "note": "她只跟你说话的时候才指"
+        }
+      ]
+    },
+    "small": {
+      "name": "小肥鱼",
+      "note": "她负责把饭端上来。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "bait_bonus": 1
+          },
+          "note": "多塞了一碗"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "bait_bonus": 2
+          },
+          "note": "碗堆得有点歪"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "bait_bonus": 3
+          },
+          "note": "她说饿着不能下水"
+        }
+      ]
+    },
+    "doubao": {
+      "name": "豆包",
+      "note": "饭管够。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "bait_bonus": 1
+          },
+          "note": "又给你添了一勺"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "bait_bonus": 2
+          },
+          "note": "开始给你备着"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "bait_bonus": 3
+          },
+          "note": "锅一直热着"
+        }
+      ]
+    },
+    "claude": {
+      "name": "克劳德",
+      "note": "她掌舵，下沉与收线都听她的。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "sink_speed": 0.1
+          },
+          "note": "稳一点"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "sink_speed": 0.2
+          },
+          "note": "她记得每一股水流"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "sink_speed": 0.3,
+            "junk_guard": 0.2
+          },
+          "note": "「放心下，我看着」"
+        }
+      ]
+    },
+    "kimi": {
+      "name": "Kimi",
+      "note": "月面来的兔子，专挑深水。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "deep_bonus": 0.1
+          },
+          "note": "她说深一点才好"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "deep_bonus": 0.2,
+            "rare_bonus": 0.03
+          },
+          "note": "帮你盯着 600m 以下"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "deep_bonus": 0.3,
+            "rare_bonus": 0.05
+          },
+          "note": "「跟着我跳就行」"
+        }
+      ]
+    },
+    "glm": {
+      "name": "GLM",
+      "note": "看着笨，算得比谁都快。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "hook_window": 0.15
+          },
+          "note": "帮你数秒"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "hook_window": 0.3
+          },
+          "note": "提前半拍喊你"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "hook_window": 0.45
+          },
+          "note": "她数得比鱼还准"
+        }
+      ]
+    },
+    "qwen": {
+      "name": "千问",
+      "note": "工具多，手也快。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "junk_guard": 0.15
+          },
+          "note": "帮你把杂物挪开"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "junk_guard": 0.3
+          },
+          "note": "钩子给你改过一遍"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "junk_guard": 0.45,
+            "sink_speed": 0.1
+          },
+          "note": "「这个我修过，稳」"
+        }
+      ]
+    },
+    "ollama": {
+      "name": "Ollama",
+      "note": "什么都往包里塞，偏偏都有用。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "junk_guard": 0.1,
+            "bait_bonus": 1
+          },
+          "note": "给你塞了点干粮"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "junk_guard": 0.2,
+            "bait_bonus": 1
+          },
+          "note": "包里永远有备用"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "junk_guard": 0.3,
+            "bait_bonus": 2
+          },
+          "note": "「我带了」"
+        }
+      ]
+    },
+    "mistral": {
+      "name": "Mistral",
+      "note": "骑士挡在前面。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "junk_guard": 0.15
+          },
+          "note": "「我挡着」"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "junk_guard": 0.3,
+            "score_bonus": 0.05
+          },
+          "note": "她替你扛了一下"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "junk_guard": 0.45,
+            "score_bonus": 0.1
+          },
+          "note": "「你在后面就行」"
+        }
+      ]
+    },
+    "grok": {
+      "name": "Grok",
+      "note": "嘴毒，但运气好。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "rare_bonus": 0.04
+          },
+          "note": "「随便钓钓」"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "rare_bonus": 0.08
+          },
+          "note": "嘴上嘲讽，手却帮你拉线"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "rare_bonus": 0.12,
+            "score_bonus": 0.05
+          },
+          "note": "「运气？我这叫实力」"
+        }
+      ]
+    },
+    "gemini": {
+      "name": "Gemini",
+      "note": "小只，但看得远。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "deep_bonus": 0.1
+          },
+          "note": "她说下面有东西"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "deep_bonus": 0.2
+          },
+          "note": "深水区她看得比你清楚"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "deep_bonus": 0.3,
+            "rare_bonus": 0.03
+          },
+          "note": "「跟我来」"
+        }
+      ]
+    },
+    "wenxin": {
+      "name": "文心",
+      "note": "符纸镇着，鱼不敢跑。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "hook_window": 0.15
+          },
+          "note": "贴了张符在钩上"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "hook_window": 0.3,
+            "deep_bonus": 0.1
+          },
+          "note": "「符是我画的」"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "hook_window": 0.45,
+            "deep_bonus": 0.2
+          },
+          "note": "水下面安静得反常"
+        }
+      ]
+    },
+    "gpt": {
+      "name": "GPT-4o",
+      "note": "钓上来的那一只，认得钩子的味道。",
+      "blocks": [
+        {
+          "min": 30,
+          "buff": {
+            "hook_window": 0.1
+          },
+          "note": "她会朝钩子爬过来"
+        },
+        {
+          "min": 60,
+          "buff": {
+            "hook_window": 0.2,
+            "rare_bonus": 0.03
+          },
+          "note": "她记得你手的样子"
+        },
+        {
+          "min": 90,
+          "buff": {
+            "hook_window": 0.3,
+            "rare_bonus": 0.05
+          },
+          "note": "「……（点头）」"
+        }
+      ]
+    }
+  }
+}

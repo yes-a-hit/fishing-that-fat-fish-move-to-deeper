@@ -1,0 +1,38 @@
+{
+  "_doc": "形态 = 好感阶段。chibi / 萝莉形态表示好感还没到，好感升上去之后解锁 pro（成熟版）。unlock 语法：always / affinity:N / item:ID / cleared:CH。private:true 表示只给主人看的特别装束。",
+  "kimi": {
+    "name": "Kimi",
+    "default": "daily",
+    "forms": [
+      {
+        "id": "daily",
+        "name": "日常",
+        "art": "res://assets/art/cast/ch2/kimi/daily.webp",
+        "unlock": "always",
+        "note": "黑色工装。她说是「上班的样子」。"
+      },
+      {
+        "id": "k28",
+        "name": "k2.8",
+        "art": "res://assets/art/cast/ch2/kimi/k28.webp",
+        "unlock": "affinity:40",
+        "note": "变身形态·换色涂装。跳跃、后空翻、装甲飞来——拍腰那一下是开关。"
+      },
+      {
+        "id": "pro",
+        "name": "k3 Pro",
+        "art": "res://assets/art/cast/ch2/kimi/k3.webp",
+        "unlock": "affinity:70",
+        "note": "变身形态·满配。参数拉满，速度更快，落地也更响。"
+      },
+      {
+        "id": "sleep",
+        "name": "私服",
+        "art": "res://assets/art/cast/ch2/kimi/sleep.webp",
+        "unlock": "affinity:100",
+        "note": "只在你面前穿。她不许你记下来，也不许你忘。",
+        "private": true
+      }
+    ]
+  }
+}

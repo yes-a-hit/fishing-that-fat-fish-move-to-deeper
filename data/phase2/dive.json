@@ -1,0 +1,102 @@
+{
+  "_note": "二期下潜数值。手改这里，不要改代码。重点：没有氧气条，下潜深度只由『鱼线长度』与『钩子容量』决定。",
+  "difficulty": {
+    "easy": {
+      "label": "轻松",
+      "sink": 46,
+      "hook_window": 0.22,
+      "spawn_rate": 0.6,
+      "score_scale": 0.8
+    },
+    "normal": {
+      "label": "普通",
+      "sink": 58,
+      "hook_window": 0.16,
+      "spawn_rate": 1.0,
+      "score_scale": 1.0
+    },
+    "hard": {
+      "label": "困难",
+      "sink": 70,
+      "hook_window": 0.11,
+      "spawn_rate": 1.35,
+      "score_scale": 1.3
+    }
+  },
+  "layers": [
+    {
+      "id": "shallow",
+      "depth_from": 0,
+      "depth_to": 420,
+      "bg": "res://assets/art/cg/ch2/water/layer_shallow.webp",
+      "ai": [
+        "kimi",
+        "glm",
+        "qwen",
+        "wenxin"
+      ]
+    },
+    {
+      "id": "mid",
+      "depth_from": 420,
+      "depth_to": 900,
+      "bg": "res://assets/art/cg/ch2/water/layer_mid.webp",
+      "ai": [
+        "ollama",
+        "mistral"
+      ]
+    },
+    {
+      "id": "deep",
+      "depth_from": 900,
+      "depth_to": 1300,
+      "bg": "res://assets/art/cg/ch2/water/layer_deep.webp",
+      "ai": [
+        "grok",
+        "gemini"
+      ]
+    }
+  ],
+  "goal": {
+    "depth": 1300,
+    "scene": "res://assets/art/cg/ch2/water/seattle.webp",
+    "character": "claude"
+  },
+  "mimic": {
+    "decoy_of": [
+      "kimi",
+      "chatgpt",
+      "grok"
+    ],
+    "chance": {
+      "mid": 0.05,
+      "deep": 0.12,
+      "goal": 0.2
+    },
+    "score": 30,
+    "reveal_radius": 120,
+    "shake_amp": 2.0
+  },
+  "score": {
+    "per_100m": 12,
+    "trinket": 40,
+    "honest_ai_base": 120,
+    "shadow_ai": 60,
+    "mimic": 30,
+    "escape_penalty": 25
+  },
+  "dive_max_depth": 1300,
+  "light": {
+    "depth_from": 600,
+    "dark_radius": 160,
+    "lit_radius": 420,
+    "lure_rate": 1.3,
+    "note": "600m 以下变暗，不开灯视野只有 160px；开灯 420px，但刷怪率 x1.3"
+  },
+  "hazard": {
+    "note": "没有专门设计的障碍物，水里漂的杂物本身就是障碍",
+    "bump_penalty": 20,
+    "bump_stun": 0.45,
+    "drop_on_bump": true
+  }
+}
